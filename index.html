@@ -15,7 +15,7 @@
 :root{--bg:#020617;--panel:#0f172a;--panel2:#1e293b;--line:#334155;--text:#f1f5f9;--muted:#94a3b8;--dim:#64748b;--accent:#f59e0b;--danger:#e11d48;--ok:#10b981;--r:12px}
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%;overflow-x:hidden}
-body{background:var(--bg);color:var(--text);font:14px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh;padding-bottom:calc(90px + env(safe-area-inset-bottom))}
+body{background:var(--bg);color:var(--text);font:14px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh;padding-bottom:calc(150px + env(safe-area-inset-bottom))}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
 button:disabled{opacity:.35;cursor:not-allowed}
 input{font:inherit;font-size:16px;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:9px;width:100%}
@@ -30,11 +30,13 @@ header{position:sticky;top:0;z-index:30;background:var(--panel);border-bottom:1p
 .title{min-width:0;flex:1}
 .title h1{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .title p{font-size:11px;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hbtn{display:flex;align-items:center;gap:5px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:9px;font-size:12px;font-weight:600}
-.hbtn:active{background:var(--line)}
-.hbtn.red{background:var(--danger);border-color:var(--danger);color:#fff}
-.hbtn .lbl{display:none}
-@media(min-width:700px){.hbtn .lbl{display:inline}}
+/* Untere Navigationsleiste: große Knöpfe mit Beschriftung */
+#bottomNav{position:fixed;left:0;right:0;bottom:0;z-index:35;background:var(--panel);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:4px 4px calc(4px + env(safe-area-inset-bottom))}
+#bottomNav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:60px;border-radius:12px;font-size:12px;font-weight:700;color:#cbd5e1}
+#bottomNav button svg.i{width:26px;height:26px;color:var(--accent)}
+#bottomNav button:active{background:var(--panel2)}
+#bottomNav button.end svg.i,#bottomNav button.end{color:#fb7185}
+.title{cursor:pointer}
 #storageWarn{background:#7f1d1d;color:#fecaca;font-size:12px;padding:6px 10px;text-align:center}
 
 main{max-width:1200px;margin:auto;padding:8px;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
@@ -52,6 +54,13 @@ main{max-width:1200px;margin:auto;padding:8px;display:grid;grid-template-columns
 .tile .pts{position:absolute;top:5px;right:6px;font-size:11px;font-weight:700;color:var(--accent);background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);padding:0 5px;border-radius:6px}
 .tile .pts.neg{color:#fb7185;background:rgba(225,29,72,.12);border-color:rgba(225,29,72,.3)}
 .tile .cnt{font-size:10px;color:var(--dim);margin-top:4px}
+.tile .nm{font-size:12px;font-weight:600;color:#cbd5e1;margin-top:4px;max-width:92%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+table.stats td .nm{display:block;font-size:10px;font-weight:500;color:var(--muted);max-width:90px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#undoBtn{max-width:58%}
+#undoBtn .u{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.namerow{display:grid;grid-template-columns:52px minmax(0,1fr);gap:8px;align-items:center}
+.namerow b{color:var(--accent);font-size:16px;text-align:right}
+#nameList{display:grid;gap:6px;max-height:260px;overflow-y:auto}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 14px;border-radius:10px;font-weight:700;font-size:13px;background:var(--panel2);border:1px solid var(--line)}
 .btn:active{filter:brightness(1.2)}
@@ -84,7 +93,7 @@ table.stats tr.gone td:first-child{color:var(--muted);font-style:italic}
 .empty{color:var(--dim);font-style:italic;text-align:center;font-size:12px;padding:8px}
 
 /* Feedback-Leiste unten (daumenfreundlich) */
-#banner{position:fixed;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));z-index:40;max-width:600px;margin:auto;background:rgba(6,78,59,.97);border:1px solid rgba(16,185,129,.6);border-radius:14px;padding:10px;display:flex;align-items:center;gap:10px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+#banner{position:fixed;left:8px;right:8px;bottom:calc(78px + env(safe-area-inset-bottom));z-index:40;max-width:600px;margin:auto;background:rgba(6,78,59,.97);border:1px solid rgba(16,185,129,.6);border-radius:14px;padding:10px;display:flex;align-items:center;gap:10px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.5)}
 #banner .ok{background:var(--ok);color:#022c22;border-radius:9px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 #banner .txt{flex:1;min-width:0}
 #banner .txt small{display:block;font-size:10px;color:#6ee7b7;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
@@ -173,24 +182,26 @@ hr{border:0;border-top:1px solid var(--line)}
 <header class="no-print">
   <div class="hwrap">
     <div class="logo">ETB</div>
-    <div class="title">
+    <div class="title" data-click="openSetup" title="Spiel &amp; Kader bearbeiten">
       <h1>Defensive Point Club</h1>
       <p id="gameInfo"></p>
     </div>
-    <button class="hbtn" data-click="openSetup" title="Spiel &amp; Kader"><svg class="i"><use href="#i-users"/></svg><span class="lbl">Kader</span></button>
-    <button class="hbtn" data-click="openConfig" title="Ereignisse"><svg class="i"><use href="#i-gear"/></svg><span class="lbl">Ereignisse</span></button>
-    <button class="hbtn" data-click="openExportCurrent" title="Export"><svg class="i"><use href="#i-download"/></svg><span class="lbl">Export</span></button>
-    <button class="hbtn" data-click="openArchive" title="Archiv &amp; Backup"><svg class="i"><use href="#i-archive"/></svg><span class="lbl">Archiv</span></button>
-    <button class="hbtn red" data-click="finishGame" title="Spiel beenden"><svg class="i"><use href="#i-flag"/></svg><span class="lbl">Beenden</span></button>
   </div>
 </header>
+<nav id="bottomNav" class="no-print">
+  <button data-click="openSetup"><svg class="i"><use href="#i-users"/></svg>Kader</button>
+  <button data-click="openConfig"><svg class="i"><use href="#i-list"/></svg>Ereignisse</button>
+  <button data-click="openExportCurrent"><svg class="i"><use href="#i-download"/></svg>Export</button>
+  <button data-click="openArchive"><svg class="i"><use href="#i-archive"/></svg>Archiv</button>
+  <button class="end" data-click="finishGame"><svg class="i"><use href="#i-whistle"/></svg>Spielende</button>
+</nav>
 <div id="storageWarn" class="hidden no-print">Achtung: Dieser Browser speichert keine Daten (z.&nbsp;B. privater Modus). Bitte nach dem Spiel sofort exportieren.</div>
 
 <main class="no-print">
   <section class="card">
     <div class="chead">
       <h2><svg class="i"><use href="#i-hand"/></svg>Spieler antippen</h2>
-      <button id="undoBtn" class="btn sm ghost-red" data-click="requestUndo" disabled><svg class="i"><use href="#i-undo"/></svg>Rückgängig</button>
+      <button id="undoBtn" class="btn sm ghost-red" data-click="requestUndo" title="Letzte Erfassung löschen" disabled><svg class="i"><use href="#i-undo"/></svg><span class="u" id="undoLabel">Letzte</span></button>
     </div>
     <div id="playerGrid" class="grid"></div>
   </section>
@@ -248,6 +259,11 @@ hr{border:0;border-top:1px solid var(--line)}
         <label for="setupRoster">Trikotnummern (durch Komma oder Leerzeichen getrennt)</label>
         <input id="setupRoster" type="text" inputmode="numeric" placeholder="5, 6, 7, 9, 10, 12, 13, 16" autocomplete="off">
         <div class="hint">Legt fest, welche Kacheln erscheinen. Bereits erfasste Werte bleiben erhalten, auch wenn eine Nummer entfernt wird.</div>
+      </div>
+      <div>
+        <label>Namen (optional)</label>
+        <div id="nameList"></div>
+        <div class="hint">Erscheinen klein unter der Nummer, in der Tabelle und in allen Exporten. Sie bleiben nur auf diesem Gerät und in deinen Sicherungen.</div>
       </div>
       <div class="box">
         <label>Kader-Vorlagen</label>
@@ -319,7 +335,7 @@ hr{border:0;border-top:1px solid var(--line)}
       <hr>
       <div>
         <label>Nur Einstellungen sichern</label>
-        <div class="hint" style="margin:0 0 8px">Ereignisse, Ereignis- und Kader-Vorlagen – ohne Spiele. Gut, um die Einrichtung an andere Helfer weiterzugeben.</div>
+        <div class="hint" style="margin:0 0 8px">Ereignisse, Ereignis- und Kader-Vorlagen sowie Spielernamen – ohne Spiele. Gut, um die Einrichtung an andere Helfer weiterzugeben.</div>
         <div class="chips">
           <button class="btn sm" data-click="settingsSave"><svg class="i"><use href="#i-download"/></svg>Speichern</button>
           <button class="btn sm share-only" data-click="settingsShare"><svg class="i"><use href="#i-share"/></svg>Teilen</button>
@@ -363,6 +379,8 @@ hr{border:0;border-top:1px solid var(--line)}
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
   <symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M10 6h11M10 12h11M10 18h11M3 6l1.5 1.5L7 5M3 12l1.5 1.5L7 11M3 18l1.5 1.5L7 17"/></symbol>
+  <symbol id="i-whistle" viewBox="0 0 24 24"><circle cx="8.5" cy="14.5" r="5.5"/><path d="M13 11.5L22 9v-3H9.5M8.5 14.5h.01M15 3l-1 2M19 3.5l-1.5 2"/></symbol>
   <symbol id="i-up" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></symbol>
   <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
 </svg>
@@ -393,10 +411,11 @@ const DEFAULT_ROSTER_TPLS = [
 ];
 const GROUP_COLORS = ['#f59e0b', '#38bdf8', '#34d399', '#a78bfa', '#2dd4bf', '#f472b6', '#facc15'];
 const K = { cats: 'etb_categories_config', game: 'etb_game_v2', archive: 'etb_archive_v2', roster: 'etb_last_roster',
-            evTpl: 'etb_event_templates', rosterTpl: 'etb_roster_templates',
+            evTpl: 'etb_event_templates', rosterTpl: 'etb_roster_templates', names: 'etb_player_names',
             oldGame: 'etb_basketball_def_app', oldArchive: 'etb_archived_games' };
 
-let categories, game, archive, lastRoster, eventTemplates, rosterTemplates;
+let categories, game, archive, lastRoster, eventTemplates, rosterTemplates, playerNames;
+let setupNames = {};
 let storageOk = true;
 let selectedPlayer = null;
 let configDraft = null;
@@ -459,6 +478,7 @@ function tally(g) {
 }
 function pointsOf(counts, cats) { return cats.reduce((s, k) => s + (counts[k.id] || 0) * k.points, 0); }
 function catById(cats, id) { return cats.find(c => c.id === id); }
+function nameOf(g, p) { return ((g && g.names) || {})[p] || ''; }
 function fmtPointsText(n) { return `${n} ${Math.abs(n) === 1 ? 'Punkt' : 'Punkte'}`; }
 // Ereignisse nach Gruppe bündeln (Reihenfolge = erstes Auftreten), mit Farbe je Gruppe
 function groupsOf(cats) {
@@ -490,6 +510,8 @@ function init() {
   lastRoster = load(K.roster, null) || DEFAULT_ROSTER;
   eventTemplates = load(K.evTpl, null) || [];
   rosterTemplates = load(K.rosterTpl, null) || clone(DEFAULT_ROSTER_TPLS);
+  playerNames = load(K.names, null) || {};
+  $('setupRoster').addEventListener('input', () => { readNameInputs(); renderNameInputs(); });
   game = load(K.game, null);
   archive = load(K.archive, null);
 
@@ -540,7 +562,7 @@ function render() {
     const n = game.history.filter(h => h.player === p).length;
     return `<button class="tile" data-click="openAction" data-p="${esc(p)}">
       <span class="pts ${pts < 0 ? 'neg' : ''}">${pts} P</span>
-      <span class="num">#${esc(p)}</span><span class="cnt">${n} Aktion${n === 1 ? '' : 'en'}</span></button>`;
+      <span class="num">#${esc(p)}</span>${nameOf(game, p) ? `<span class="nm">${esc(nameOf(game, p))}</span>` : `<span class="cnt">${n} Aktion${n === 1 ? '' : 'en'}</span>`}</button>`;
   }).join('') || '<p class="empty">Keine Spieler – bitte über „Kader“ Nummern eintragen.</p>';
 
   // Tabelle
@@ -550,7 +572,7 @@ function render() {
   let html = '<thead><tr><th>#</th>' + categories.map(c => `<th>${esc(c.name)}<small class="${c.points < 0 ? 'neg' : ''}">${fmtPts(c.points)} P</small></th>`).join('') + '<th class="tot">Gesamt</th></tr></thead><tbody>';
   players.forEach(p => {
     const st = counts[p] || {}; const pts = pointsOf(st, categories); team += pts;
-    html += `<tr class="${game.players.includes(p) ? '' : 'gone'}"><td>#${esc(p)}</td>` + categories.map(c => {
+    html += `<tr class="${game.players.includes(p) ? '' : 'gone'}"><td>#${esc(p)}${nameOf(game, p) ? `<span class="nm">${esc(nameOf(game, p))}</span>` : ''}</td>` + categories.map(c => {
       const v = st[c.id] || 0; colSum[c.id] = (colSum[c.id] || 0) + v;
       return `<td class="${v ? '' : 'zero'}">${v}</td>`;
     }).join('') + `<td class="tot">${pts}</td></tr>`;
@@ -568,7 +590,10 @@ function render() {
       <button data-click="deleteEntry" data-id="${esc(h.id)}" title="Eintrag löschen"><svg class="i"><use href="#i-x"/></svg></button></div>`;
   }).join('') : '<p class="empty">Noch keine Aktionen erfasst.</p>';
 
-  $('undoBtn').disabled = game.history.length === 0;
+  // Rückgängig-Knopf zeigt, was gelöscht würde
+  const lastE = game.history[game.history.length - 1], lastC = lastE && catById(categories, lastE.cat);
+  $('undoBtn').disabled = !lastE;
+  $('undoLabel').textContent = lastE ? `#${lastE.player} ${lastC ? lastC.name : ''}` : 'Letzte';
 }
 
 /* ===================== Erfassen ===================== */
@@ -587,7 +612,8 @@ function recordAction(catId) {
 
 function showBanner(entry, cat) {
   bannerEntryId = entry.id;
-  $('bannerText').textContent = `#${entry.player} – ${cat.name}`;
+  const nm = nameOf(game, entry.player);
+  $('bannerText').textContent = `#${entry.player}${nm ? ' ' + nm : ''} – ${cat.name}`;
   const bar = $('bannerBar'); bar.classList.remove('run'); void bar.offsetWidth; bar.classList.add('run');
   showM('banner');
   clearTimeout(bannerTimer); bannerTimer = setTimeout(hideBanner, 7000);
@@ -616,20 +642,21 @@ function statRows(g, cats) {
   const rows = []; const colSum = {}; let team = 0;
   players.forEach(p => {
     const st = counts[p]; const pts = pointsOf(st, cats); team += pts;
-    rows.push({ p, vals: cats.map(c => { const v = st[c.id] || 0; colSum[c.id] = (colSum[c.id] || 0) + v; return v; }), pts });
+    rows.push({ p, name: nameOf(g, p), vals: cats.map(c => { const v = st[c.id] || 0; colSum[c.id] = (colSum[c.id] || 0) + v; return v; }), pts });
   });
-  return { rows, sums: cats.map(c => colSum[c.id] || 0), team };
+  return { rows, sums: cats.map(c => colSum[c.id] || 0), team, hasNames: rows.some(r => r.name) };
 }
 
 function buildCsv(g, cats) {
   const q = v => { const s = String(v); return /[;"\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
-  const { rows, sums, team } = statRows(g, cats);
+  const { rows, sums, team, hasNames } = statRows(g, cats);
+  const N = v => hasNames ? [v] : [];
   const lines = [
     ['ETB Defensive Point Club'], ['Gegner/Spiel', g.opponent || ''], ['Datum', fmtDate(g.date)], [],
-    ['Nummer', ...cats.map(c => c.name), 'Gesamtpunkte'],
-    ['Punktwert', ...cats.map(c => c.points), ''],
-    ...rows.map(r => ['#' + r.p, ...r.vals, r.pts]),
-    ['Team', ...sums, team]
+    ['Nummer', ...N('Name'), ...cats.map(c => c.name), 'Gesamtpunkte'],
+    ['Punktwert', ...N(''), ...cats.map(c => c.points), ''],
+    ...rows.map(r => ['#' + r.p, ...N(r.name), ...r.vals, r.pts]),
+    ['Team', ...N(''), ...sums, team]
   ];
   return new Blob(['﻿' + lines.map(l => l.map(q).join(';')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
 }
@@ -688,16 +715,17 @@ function sheetXml(rows, widths) {
 }
 function buildXlsx(g, cats) {
   const B = v => ({ v, s: 1 }), H = v => ({ v, s: 2 });
-  const { rows, sums, team } = statRows(g, cats);
+  const { rows, sums, team, hasNames } = statRows(g, cats);
+  const N = v => hasNames ? [v] : [];
   const s1 = [
     [B('ETB Defensive Point Club')], ['Gegner/Spiel', g.opponent || ''], ['Datum', fmtDate(g.date)], [],
-    [H('Nummer'), ...cats.map(c => H(c.name)), H('Gesamtpunkte')],
-    ['Punktwert', ...cats.map(c => c.points), ''],
-    ...rows.map(r => ['#' + r.p, ...r.vals, B(r.pts)]),
-    [B('Team'), ...sums.map(B), B(team)]
+    [H('Nummer'), ...N(H('Name')), ...cats.map(c => H(c.name)), H('Gesamtpunkte')],
+    ['Punktwert', ...N(''), ...cats.map(c => c.points), ''],
+    ...rows.map(r => ['#' + r.p, ...N(r.name), ...r.vals, B(r.pts)]),
+    [B('Team'), ...N(''), ...sums.map(B), B(team)]
   ];
-  const s2 = [[H('Zeit'), H('Spieler'), H('Ereignis'), H('Punkte')],
-    ...g.history.map(h => { const c = catById(cats, h.cat); return [h.time || '', '#' + h.player, c ? c.name : '(gelöscht)', c ? c.points : '']; })];
+  const s2 = [[H('Zeit'), H('Spieler'), ...N(H('Name')), H('Ereignis'), H('Punkte')],
+    ...g.history.map(h => { const c = catById(cats, h.cat); return [h.time || '', '#' + h.player, ...N(nameOf(g, h.player)), c ? c.name : '(gelöscht)', c ? c.points : '']; })];
   const ns = 'http://schemas.openxmlformats.org';
   const files = [
     { name: '[Content_Types].xml', data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="${ns}/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/worksheets/sheet2.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>` },
@@ -705,8 +733,8 @@ function buildXlsx(g, cats) {
     { name: 'xl/workbook.xml', data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="${ns}/spreadsheetml/2006/main" xmlns:r="${ns}/officeDocument/2006/relationships"><sheets><sheet name="Statistik" sheetId="1" r:id="rId1"/><sheet name="Verlauf" sheetId="2" r:id="rId2"/></sheets></workbook>` },
     { name: 'xl/_rels/workbook.xml.rels', data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="${ns}/package/2006/relationships"><Relationship Id="rId1" Type="${ns}/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="${ns}/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet2.xml"/><Relationship Id="rId3" Type="${ns}/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>` },
     { name: 'xl/styles.xml', data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="${ns}/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFDE68A"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/></cellXfs><cellStyles count="1"><cellStyle name="Standard" xfId="0" builtinId="0"/></cellStyles></styleSheet>` },
-    { name: 'xl/worksheets/sheet1.xml', data: sheetXml(s1, [16, ...cats.map(() => 13), 14]) },
-    { name: 'xl/worksheets/sheet2.xml', data: sheetXml(s2, [10, 10, 34, 9]) }
+    { name: 'xl/worksheets/sheet1.xml', data: sheetXml(s1, [16, ...N(18), ...cats.map(() => 13), 14]) },
+    { name: 'xl/worksheets/sheet2.xml', data: sheetXml(s2, [10, 10, ...N(18), 34, 9]) }
   ];
   return makeZip(files, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 }
@@ -747,8 +775,8 @@ function assemblePdf(streams, W, H) {
 }
 function buildPdf(g, cats) {
   const W = 842, H = 595, M = 28, tw = W - 2 * M, enc = pdfEnc;
-  const { rows, sums, team } = statRows(g, cats);
-  const c0 = 52, cl = 72, cw = (tw - c0 - cl) / cats.length;
+  const { rows, sums, team, hasNames } = statRows(g, cats);
+  const c0 = hasNames ? 92 : 52, cl = 72, cw = (tw - c0 - cl) / cats.length;
   const colX = [M, M + c0]; for (let i = 1; i < cats.length; i++) colX.push(M + c0 + i * cw); colX.push(M + tw - cl, M + tw);
   const hdr = ['Nr.', ...cats.map(c => c.name), 'Gesamtpunkte'].map((t, i) => {
     const s = enc(t), w = colX[i + 1] - colX[i] - 6; let size = 8.5, lines;
@@ -759,7 +787,7 @@ function buildPdf(g, cats) {
   const last = cats.length + 1;
   const body = [
     { cells: ['Punkte', ...cats.map(c => String(c.points)), ''], h: 16, fill: 0.95, size: 8.5 },
-    ...rows.map(r => ({ cells: ['#' + r.p, ...r.vals.map(v => v ? String(v) : ''), String(r.pts)], h: 19, size: 10, boldCols: [0, last] })),
+    ...rows.map(r => ({ cells: ['#' + r.p, ...r.vals.map(v => v ? String(v) : ''), String(r.pts)], sub: r.name, h: hasNames ? 26 : 19, size: 10, boldCols: [0, last] })),
     { cells: ['Team', ...sums.map(String), String(team)], h: 20, size: 10, bold: true, thick: true }
   ];
   const pages = []; let ops, y, tableTop;
@@ -788,7 +816,15 @@ function buildPdf(g, cats) {
     if (y - r.h < M + 24) { endPage(); startPage(); }
     if (r.fill) R(M, y - r.h, tw, r.h, r.fill);
     if (r.thick) L(M, y, M + tw, y, 2.2);
-    r.cells.forEach((s, i) => { if (s) C(enc(s), i, y - r.h / 2 - r.size * 0.35, r.size, r.bold || (r.boldCols || []).includes(i)); });
+    r.cells.forEach((s, i) => {
+      if (!s) return;
+      const bold = r.bold || (r.boldCols || []).includes(i);
+      if (i === 0 && r.sub) { // Nummer oben, Name klein darunter
+        C(enc(s), 0, y - 11, r.size, true);
+        const nm = enc(r.sub); let ns = 7.5; while (ns > 5 && textW(nm, false, ns) > c0 - 6) ns -= 0.5;
+        C(nm, 0, y - r.h + 5, ns, false);
+      } else C(enc(s), i, y - r.h / 2 - r.size * 0.35, r.size, bold);
+    });
     y -= r.h; L(M, y, M + tw, y, 1);
   });
   endPage();
@@ -807,7 +843,7 @@ function canShareFiles() {
 }
 function downloadFile(blob, name) {
   try {
-    const url = URL.createObjectURL(blob), a = document.createElement('a');
+    const url = URL.createObjectURL(new Blob([blob], { type: 'application/octet-stream' })), a = document.createElement('a');
     a.href = url; a.download = name; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 60000); // nicht sofort freigeben, sonst bricht der Download auf manchen Geräten ab
     toast('Datei wird gespeichert: ' + name);
@@ -827,7 +863,7 @@ function renderPrint(g, cats) {
     <div class="meta"><span>Spiel: <b>${esc(g.opponent || '____________________')}</b></span><span>Datum: <b>${esc(fmtDate(g.date))}</b></span></div>
     <table><thead><tr><th>Nr.</th>${cats.map(c => `<th>${esc(c.name)}</th>`).join('')}<th>Gesamtpunkte</th></tr></thead><tbody>
     <tr class="pv"><td>Punkte</td>${cats.map(c => `<td>${c.points}</td>`).join('')}<td></td></tr>
-    ${rows.map(r => `<tr><td><b>#${esc(r.p)}</b></td>${r.vals.map(v => `<td>${v || ''}</td>`).join('')}<td><b>${r.pts}</b></td></tr>`).join('')}
+    ${rows.map(r => `<tr><td><b>#${esc(r.p)}</b>${r.name ? `<br><small>${esc(r.name)}</small>` : ''}</td>${r.vals.map(v => `<td>${v || ''}</td>`).join('')}<td><b>${r.pts}</b></td></tr>`).join('')}
     <tr class="sum"><td>Team</td>${sums.map(v => `<td>${v}</td>`).join('')}<td>${team}</td></tr></tbody></table>
     <div class="foot"><span>ETB Defensive Point Club – Digital Tracker</span><span>Erstellt am ${esc(new Date().toLocaleString('de-DE'))}</span></div>`;
 }
@@ -842,10 +878,10 @@ function renderArchive() {
   }).join('') : '<p class="empty">Noch keine beendeten Spiele. Spiele landen hier nach „Beenden“.</p>';
 }
 function backupBlob() {
-  return new Blob([JSON.stringify({ app: 'etb-dpc', version: 3, exported: new Date().toISOString(), categories, lastRoster, eventTemplates, rosterTemplates, game, archive }, null, 1)], { type: 'application/json' });
+  return new Blob([JSON.stringify({ app: 'etb-dpc', version: 3, exported: new Date().toISOString(), categories, lastRoster, eventTemplates, rosterTemplates, playerNames, game, archive }, null, 1)], { type: 'application/json' });
 }
 function settingsBlob() {
-  return new Blob([JSON.stringify({ app: 'etb-dpc-settings', version: 1, exported: new Date().toISOString(), categories, eventTemplates, rosterTemplates, lastRoster }, null, 1)], { type: 'application/json' });
+  return new Blob([JSON.stringify({ app: 'etb-dpc-settings', version: 1, exported: new Date().toISOString(), categories, eventTemplates, rosterTemplates, lastRoster, playerNames }, null, 1)], { type: 'application/json' });
 }
 async function onSettingsFile(e) {
   const f = e.target.files[0]; e.target.value = '';
@@ -861,6 +897,7 @@ async function onSettingsFile(e) {
   if (Array.isArray(d.eventTemplates)) { eventTemplates = d.eventTemplates; store(K.evTpl, eventTemplates); }
   if (Array.isArray(d.rosterTemplates)) { rosterTemplates = d.rosterTemplates; store(K.rosterTpl, rosterTemplates); }
   if (Array.isArray(d.lastRoster)) { lastRoster = d.lastRoster; store(K.roster, lastRoster); }
+  if (d.playerNames && typeof d.playerNames === 'object') { playerNames = d.playerNames; store(K.names, playerNames); }
   render(); toast('Einstellungen geladen');
 }
 async function onBackupFile(e) {
@@ -873,6 +910,7 @@ async function onBackupFile(e) {
     categories = migrateCategories(d.categories); game = d.game; archive = d.archive; lastRoster = d.lastRoster || lastRoster;
     if (Array.isArray(d.eventTemplates)) eventTemplates = d.eventTemplates;
     if (Array.isArray(d.rosterTemplates)) rosterTemplates = d.rosterTemplates;
+    if (d.playerNames && typeof d.playerNames === 'object') { playerNames = d.playerNames; store(K.names, playerNames); }
     store(K.cats, categories); saveGame(); store(K.archive, archive); store(K.roster, lastRoster);
     store(K.evTpl, eventTemplates); store(K.rosterTpl, rosterTemplates);
     render(); renderArchive(); toast('Backup geladen');
@@ -901,6 +939,11 @@ function renderConfig() {
   $('evTplChips').innerHTML = `<span class="tplchip"><button data-click="loadEvTpl" data-i="-1">${esc(BUILTIN_TPL_NAME)}</button></span>` +
     eventTemplates.map((t, i) => `<span class="tplchip"><button data-click="loadEvTpl" data-i="${i}">${esc(t.name)}</button><button class="del" data-click="delEvTpl" data-i="${i}" title="Vorlage löschen"><svg class="i"><use href="#i-x"/></svg></button></span>`).join('');
 }
+function readNameInputs() { document.querySelectorAll('#nameList input').forEach(i => setupNames[i.dataset.p] = i.value.trim()); }
+function renderNameInputs() {
+  const players = parseRoster($('setupRoster').value);
+  $('nameList').innerHTML = players.map(p => `<div class="namerow"><b>#${esc(p)}</b><input type="text" data-p="${esc(p)}" value="${esc(setupNames[p] || '')}" placeholder="Name" autocomplete="off" autocapitalize="words"></div>`).join('') || '<span class="hint" style="margin:0">Erst Nummern eintragen.</span>';
+}
 function renderRosterTpls() {
   $('presetChips').innerHTML = rosterTemplates.length ? rosterTemplates.map((t, i) => `<span class="tplchip"><button data-click="applyPreset" data-i="${i}">${esc(t.name)}</button><button class="del" data-click="delRosterTpl" data-i="${i}" title="Vorlage löschen"><svg class="i"><use href="#i-x"/></svg></button></span>`).join('')
     : '<span class="hint" style="margin:0">Noch keine Vorlagen gespeichert.</span>';
@@ -916,6 +959,7 @@ const actions = {
   openAction(el) {
     selectedPlayer = el.dataset.p;
     $('actionBadge').textContent = '#' + selectedPlayer;
+    $('actionModal').querySelector('h3').textContent = nameOf(game, selectedPlayer) || 'Aktion wählen';
     const st = tally(game)[selectedPlayer] || {};
     $('actionPlayerInfo').textContent = 'Bisher ' + fmtPointsText(pointsOf(st, categories));
     $('actionGrid').innerHTML = groupsOf(categories).map(g => `<div class="grp" style="--gc:${g.color}"><h4>${esc(g.name)}</h4><div class="actgrid">` +
@@ -952,7 +996,8 @@ const actions = {
       archive.push({ ...clone(game), categories: clone(categories), finishedAt: Date.now() });
       store(K.archive, archive);
     }
-    game = newGame(game.players); saveGame(); hideBanner(); render();
+    const keepNames = game.names || {};
+    game = newGame(game.players); game.names = { ...keepNames }; saveGame(); hideBanner(); render();
     actions.openSetup();
   },
 
@@ -961,19 +1006,28 @@ const actions = {
     $('setupDate').value = game.date || todayISO();
     $('setupRoster').value = game.players.join(', ');
     $('rosterTplName').value = '';
+    setupNames = { ...playerNames, ...(game.names || {}) };
+    renderNameInputs();
     renderRosterTpls();
     showM('setupModal');
   },
   closeSetup() { hideM('setupModal'); },
-  applyPreset(el) { const t = rosterTemplates[+el.dataset.i]; if (t) { $('setupRoster').value = t.players.join(', '); toast('Vorlage „' + t.name + '“ eingesetzt'); } },
+  applyPreset(el) {
+    const t = rosterTemplates[+el.dataset.i]; if (!t) return;
+    readNameInputs(); $('setupRoster').value = t.players.join(', ');
+    if (t.names) Object.assign(setupNames, t.names);
+    renderNameInputs(); toast('Vorlage „' + t.name + '“ eingesetzt');
+  },
   async saveRosterTpl() {
     const name = $('rosterTplName').value.trim();
     const players = parseRoster($('setupRoster').value);
     if (!name) return toast('Bitte einen Namen für die Vorlage eingeben.');
     if (!players.length) return toast('Bitte zuerst Trikotnummern eintragen.');
     const i = rosterTemplates.findIndex(t => t.name.toLowerCase() === name.toLowerCase());
-    if (i >= 0) { if (!await ask('Vorlage überschreiben?', `„${rosterTemplates[i].name}“ existiert bereits.`, 'Überschreiben', false)) return; rosterTemplates[i] = { name, players }; }
-    else rosterTemplates.push({ name, players });
+    readNameInputs();
+    const names = {}; players.forEach(p => { if (setupNames[p]) names[p] = setupNames[p]; });
+    if (i >= 0) { if (!await ask('Vorlage überschreiben?', `„${rosterTemplates[i].name}“ existiert bereits.`, 'Überschreiben', false)) return; rosterTemplates[i] = { name, players, names }; }
+    else rosterTemplates.push({ name, players, names });
     store(K.rosterTpl, rosterTemplates); $('rosterTplName').value = ''; renderRosterTpls(); toast('Kader-Vorlage gespeichert');
   },
   async delRosterTpl(el) {
@@ -986,6 +1040,11 @@ const actions = {
     game.opponent = $('setupOpponent').value.trim();
     game.date = $('setupDate').value || todayISO();
     game.players = players;
+    readNameInputs();
+    game.names = {}; players.forEach(p => { if (setupNames[p]) game.names[p] = setupNames[p]; });
+    allPlayers(game).forEach(p => { if (!game.names[p] && playerNames[p] && !players.includes(p)) game.names[p] = playerNames[p]; });
+    players.forEach(p => { if (setupNames[p]) playerNames[p] = setupNames[p]; else delete playerNames[p]; });
+    store(K.names, playerNames);
     lastRoster = players; store(K.roster, lastRoster);
     saveGame(); render(); hideM('setupModal');
   },

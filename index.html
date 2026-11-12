@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ETB DPC">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>ETB Defensive Point Club</title>
+<style>
+:root{--bg:#020617;--panel:#0f172a;--panel2:#1e293b;--line:#334155;--text:#f1f5f9;--muted:#94a3b8;--dim:#64748b;--accent:#f59e0b;--danger:#e11d48;--ok:#10b981;--r:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font:14px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh;padding-bottom:calc(90px + env(safe-area-inset-bottom))}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+button:disabled{opacity:.35;cursor:not-allowed}
+input{font:inherit;font-size:16px;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:9px;width:100%}
+input:focus{outline:none;border-color:var(--accent)}
+label{display:block;font-size:12px;font-weight:600;color:#cbd5e1;margin-bottom:4px}
+svg.i{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;vertical-align:-.2em}
+.hidden{display:none!important}
+
+header{position:sticky;top:0;z-index:30;background:var(--panel);border-bottom:1px solid var(--line);padding:6px 8px;padding-top:max(6px,env(safe-area-inset-top))}
+.hwrap{max-width:1200px;margin:auto;display:flex;align-items:center;gap:6px}
+.logo{background:var(--accent);color:#0b1220;font-weight:900;font-size:12px;padding:3px 7px;border-radius:8px}
+.title{min-width:0;flex:1}
+.title h1{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.title p{font-size:11px;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hbtn{display:flex;align-items:center;gap:5px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:9px;font-size:12px;font-weight:600}
+.hbtn:active{background:var(--line)}
+.hbtn.red{background:var(--danger);border-color:var(--danger);color:#fff}
+.hbtn .lbl{display:none}
+@media(min-width:700px){.hbtn .lbl{display:inline}}
+#storageWarn{background:#7f1d1d;color:#fecaca;font-size:12px;padding:6px 10px;text-align:center}
+
+main{max-width:1200px;margin:auto;padding:8px;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.card{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:10px}
+.chead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.chead h2{font-size:12px;font-weight:700;color:#cbd5e1;display:flex;gap:6px;align-items:center}
+.chead h2 svg{color:var(--accent)}
+.pill{font-size:12px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:2px 8px;color:#cbd5e1}
+.pill b{color:var(--accent)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.tile{position:relative;background:var(--panel2);border:1px solid var(--line);border-radius:var(--r);min-height:86px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform .08s}
+.tile:active{transform:scale(.94);background:var(--line)}
+.tile .num{font-size:32px;font-weight:900;line-height:1}
+.tile .pts{position:absolute;top:5px;right:6px;font-size:11px;font-weight:700;color:var(--accent);background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);padding:0 5px;border-radius:6px}
+.tile .pts.neg{color:#fb7185;background:rgba(225,29,72,.12);border-color:rgba(225,29,72,.3)}
+.tile .cnt{font-size:10px;color:var(--dim);margin-top:4px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 14px;border-radius:10px;font-weight:700;font-size:13px;background:var(--panel2);border:1px solid var(--line)}
+.btn:active{filter:brightness(1.2)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#0b1220}
+.btn.danger{background:var(--danger);border-color:var(--danger);color:#fff}
+.btn.ghost-red{color:#fb7185;border-color:rgba(225,29,72,.4);background:rgba(225,29,72,.1)}
+.btn.sm{padding:7px 10px;font-size:12px}
+.link-red{color:#fb7185;font-size:12px;display:inline-flex;gap:4px;align-items:center}
+
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -10px -10px;border-top:1px solid var(--line)}
+table.stats{border-collapse:collapse;width:100%;font-size:12px;min-width:640px}
+table.stats th,table.stats td{padding:7px 5px;text-align:center;border-bottom:1px solid #1e293b}
+table.stats th{background:var(--panel2);color:var(--muted);font-weight:600;vertical-align:bottom}
+table.stats th small{display:block;font-weight:400;color:var(--accent)}
+table.stats th small.neg{color:#fb7185}
+table.stats td:first-child,table.stats th:first-child{position:sticky;left:0;background:var(--panel);font-weight:900;color:var(--accent)}
+table.stats th:first-child{background:var(--panel2)}
+table.stats td.zero{color:var(--dim)}
+table.stats .tot{background:rgba(245,158,11,.1);color:var(--accent);font-weight:900}
+table.stats tr.sum td{font-weight:800;border-top:2px solid var(--line)}
+table.stats tr.gone td:first-child{color:var(--muted);font-style:italic}
+
+.log{max-height:230px;overflow-y:auto;display:grid;gap:4px}
+.logrow{display:flex;align-items:center;gap:8px;background:rgba(30,41,59,.6);border:1px solid #1e293b;border-radius:8px;padding:5px 6px;font-size:12px}
+.logrow .t{color:var(--muted);font-family:ui-monospace,monospace;font-size:11px}
+.logrow .p{background:rgba(245,158,11,.18);color:var(--accent);font-weight:800;border-radius:5px;padding:0 5px}
+.logrow .n{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.logrow .v{color:var(--muted);font-size:11px}
+.logrow button{color:var(--dim);padding:6px}
+.empty{color:var(--dim);font-style:italic;text-align:center;font-size:12px;padding:8px}
+
+/* Feedback-Leiste unten (daumenfreundlich) */
+#banner{position:fixed;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));z-index:40;max-width:600px;margin:auto;background:rgba(6,78,59,.97);border:1px solid rgba(16,185,129,.6);border-radius:14px;padding:10px;display:flex;align-items:center;gap:10px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+#banner .ok{background:var(--ok);color:#022c22;border-radius:9px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+#banner .txt{flex:1;min-width:0}
+#banner .txt small{display:block;font-size:10px;color:#6ee7b7;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+#banner .txt b{font-size:14px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#banner .bar{position:absolute;left:0;bottom:0;height:3px;background:#34d399;width:100%}
+#banner .bar.run{animation:shrink 7s linear forwards}
+#banner .undo{background:rgba(0,0,0,.25);border:1px solid rgba(110,231,183,.4);color:#d1fae5;border-radius:9px;padding:8px 10px;font-size:12px;font-weight:700;display:flex;gap:5px;align-items:center}
+@keyframes shrink{from{width:100%}to{width:0}}
+
+#toast{position:fixed;left:50%;top:calc(60px + env(safe-area-inset-top));transform:translateX(-50%);z-index:80;background:#e2e8f0;color:#0f172a;font-weight:700;font-size:13px;padding:9px 14px;border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,.4);max-width:90vw;text-align:center}
+
+/* Dialoge */
+.modal{position:fixed;inset:0;z-index:50;background:rgba(2,6,23,.85);display:flex;align-items:center;justify-content:center;padding:10px}
+.modal.top{z-index:70}
+.dlg{background:var(--panel);border:1px solid var(--line);border-radius:16px;width:100%;max-width:520px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.dlg.small{max-width:340px}
+.dhead{background:var(--panel2);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line)}
+.dhead h3{font-size:15px;display:flex;gap:8px;align-items:center}
+.dhead h3 svg{color:var(--accent)}
+.dhead .x{padding:8px;color:var(--muted)}
+.dbody{padding:14px;overflow-y:auto;flex:1;display:grid;gap:12px;align-content:start}
+.dfoot{padding:10px 12px;border-top:1px solid var(--line);background:rgba(30,41,59,.5);display:flex;gap:8px;justify-content:flex-end;align-items:center}
+.dfoot .spacer{flex:1}
+.badge{background:var(--accent);color:#0b1220;font-size:24px;font-weight:900;min-width:46px;height:46px;padding:0 6px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+.actgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.act{min-height:68px;border-radius:12px;border:2px solid var(--line);background:var(--panel2);font-weight:800;font-size:15px;text-align:left;padding:10px 12px;line-height:1.2;display:flex;align-items:center}
+.act:active{background:var(--accent);color:#0b1220;transform:scale(.97)}
+.act.neg{border-color:rgba(225,29,72,.5);background:rgba(225,29,72,.12)}
+.act.neg:active{background:var(--danger);color:#fff}
+.row2{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:10px}
+@media(max-width:420px){.row2{grid-template-columns:minmax(0,1fr)}}
+.hint{font-size:11px;color:var(--muted);margin-top:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.catrow{display:flex;gap:6px;align-items:center;background:rgba(30,41,59,.6);border:1px solid var(--line);border-radius:10px;padding:6px}
+.catrow input.name{flex:1}
+.catrow input.pts{width:70px;text-align:center;font-family:ui-monospace,monospace}
+.catrow button{color:var(--dim);padding:8px}
+.catrow .mv{display:flex;flex-direction:column}
+.catrow .mv button{padding:2px 6px}
+.exprow{display:flex;align-items:center;gap:8px;background:rgba(30,41,59,.6);border:1px solid var(--line);border-radius:12px;padding:10px}
+.exprow .n{flex:1;font-weight:700}
+.exprow .n small{display:block;font-weight:400;color:var(--muted);font-size:11px}
+.arch{border:1px solid var(--line);border-radius:12px;padding:10px;background:rgba(30,41,59,.5);display:grid;gap:8px}
+.arch .h{display:flex;justify-content:space-between;gap:8px;font-weight:700}
+.arch .h small{color:var(--muted);font-weight:400}
+.arch .b{display:flex;flex-wrap:wrap;gap:6px}
+hr{border:0;border-top:1px solid var(--line)}
+
+/* Druck / PDF (DIN A4 quer) */
+#printSheet{display:none}
+@media print{
+  @page{size:A4 landscape;margin:1cm}
+  body{background:#fff!important;color:#000!important;padding:0}
+  .no-print,header,main,#banner,#toast,.modal{display:none!important}
+  #printSheet{display:block;font-family:Arial,sans-serif;font-size:10pt;color:#000}
+  #printSheet h1{font-size:16pt;text-transform:uppercase}
+  #printSheet .meta{display:flex;justify-content:space-between;border-bottom:2px solid #000;padding-bottom:6px;margin:6px 0 12px}
+  #printSheet table{width:100%;border-collapse:collapse}
+  #printSheet th,#printSheet td{border:1.2px solid #000;padding:5px 3px;text-align:center}
+  #printSheet th,#printSheet tr.pv td{background:#f1f5f9;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #printSheet tr.sum td{font-weight:bold;border-top:2.5px solid #000}
+  #printSheet .foot{margin-top:14px;font-size:8pt;color:#555;display:flex;justify-content:space-between}
+}
+</style>
+</head>
+<body>
+
+<header class="no-print">
+  <div class="hwrap">
+    <div class="logo">ETB</div>
+    <div class="title">
+      <h1>Defensive Point Club</h1>
+      <p id="gameInfo"></p>
+    </div>
+    <button class="hbtn" data-click="openSetup" title="Spiel &amp; Kader"><svg class="i"><use href="#i-users"/></svg><span class="lbl">Kader</span></button>
+    <button class="hbtn" data-click="openConfig" title="Ereignisse"><svg class="i"><use href="#i-gear"/></svg><span class="lbl">Ereignisse</span></button>
+    <button class="hbtn" data-click="openExportCurrent" title="Export"><svg class="i"><use href="#i-download"/></svg><span class="lbl">Export</span></button>
+    <button class="hbtn" data-click="openArchive" title="Archiv &amp; Backup"><svg class="i"><use href="#i-archive"/></svg><span class="lbl">Archiv</span></button>
+    <button class="hbtn red" data-click="finishGame" title="Spiel beenden"><svg class="i"><use href="#i-flag"/></svg><span class="lbl">Beenden</span></button>
+  </div>
+</header>
+<div id="storageWarn" class="hidden no-print">Achtung: Dieser Browser speichert keine Daten (z.&nbsp;B. privater Modus). Bitte nach dem Spiel sofort exportieren.</div>
+
+<main class="no-print">
+  <section class="card">
+    <div class="chead">
+      <h2><svg class="i"><use href="#i-hand"/></svg>Spieler antippen</h2>
+      <button id="undoBtn" class="btn sm ghost-red" data-click="requestUndo" disabled><svg class="i"><use href="#i-undo"/></svg>Rückgängig</button>
+    </div>
+    <div id="playerGrid" class="grid"></div>
+  </section>
+
+  <section class="card">
+    <div class="chead">
+      <h2><svg class="i"><use href="#i-table"/></svg>Live-Statistik</h2>
+      <span class="pill">Team: <b id="teamPoints">0</b> P</span>
+    </div>
+    <div class="tablewrap"><table class="stats" id="statsTable"></table></div>
+  </section>
+
+  <section class="card">
+    <div class="chead">
+      <h2><svg class="i"><use href="#i-clock"/></svg>Verlauf <span id="logCount" class="pill">0</span></h2>
+      <button class="link-red" data-click="clearGame"><svg class="i"><use href="#i-trash"/></svg>Alles zurücksetzen</button>
+    </div>
+    <div id="log" class="log"></div>
+  </section>
+</main>
+
+<!-- Rückmeldung nach jeder Erfassung -->
+<div id="banner" class="hidden no-print">
+  <div class="ok"><svg class="i"><use href="#i-check"/></svg></div>
+  <div class="txt"><small>Erfasst</small><b id="bannerText"></b></div>
+  <button class="undo" data-click="bannerUndo"><svg class="i"><use href="#i-undo"/></svg>Rückgängig</button>
+  <div class="bar" id="bannerBar"></div>
+</div>
+<div id="toast" class="hidden no-print"></div>
+
+<!-- Ereignis wählen -->
+<div id="actionModal" class="modal hidden" data-backdrop="closeAction">
+  <div class="dlg">
+    <div class="dhead">
+      <div style="display:flex;gap:10px;align-items:center">
+        <span class="badge" id="actionBadge">#</span>
+        <div><h3>Aktion wählen</h3><div class="hint" id="actionPlayerInfo"></div></div>
+      </div>
+      <button class="x" data-click="closeAction"><svg class="i"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="dbody"><div class="actgrid" id="actionGrid"></div></div>
+    <div class="dfoot"><button class="btn" style="width:100%" data-click="closeAction">Abbrechen</button></div>
+  </div>
+</div>
+
+<!-- Spiel & Kader -->
+<div id="setupModal" class="modal hidden">
+  <div class="dlg">
+    <div class="dhead"><h3><svg class="i"><use href="#i-users"/></svg>Spiel &amp; Kader</h3><button class="x" data-click="closeSetup"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="dbody">
+      <div class="row2">
+        <div><label for="setupOpponent">Gegner / Spiel</label><input id="setupOpponent" type="text" placeholder="z. B. Kinderhaus Münster" autocomplete="off"></div>
+        <div><label for="setupDate">Datum</label><input id="setupDate" type="date"></div>
+      </div>
+      <div>
+        <label for="setupRoster">Trikotnummern (durch Komma oder Leerzeichen getrennt)</label>
+        <input id="setupRoster" type="text" inputmode="numeric" placeholder="5, 6, 7, 9, 10, 12, 13, 16" autocomplete="off">
+        <div class="hint">Legt fest, welche Kacheln erscheinen. Bereits erfasste Werte bleiben erhalten, auch wenn eine Nummer entfernt wird.</div>
+      </div>
+      <div>
+        <label>Vorlagen</label>
+        <div class="chips" id="presetChips"></div>
+      </div>
+    </div>
+    <div class="dfoot"><button class="btn" data-click="closeSetup">Abbrechen</button><button class="btn primary" data-click="saveSetup">Speichern</button></div>
+  </div>
+</div>
+
+<!-- Ereignisse verwalten -->
+<div id="configModal" class="modal hidden">
+  <div class="dlg">
+    <div class="dhead"><h3><svg class="i"><use href="#i-gear"/></svg>Ereignisse &amp; Punkte</h3><button class="x" data-click="closeConfig"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="dbody">
+      <div class="hint" style="margin:0">Name und Punktwert anpassen, Reihenfolge mit den Pfeilen ändern. Punktänderungen gelten auch rückwirkend für das laufende Spiel.</div>
+      <div id="catList" style="display:grid;gap:6px"></div>
+      <button class="btn" data-click="addCategory"><svg class="i"><use href="#i-plus"/></svg>Ereignis hinzufügen</button>
+    </div>
+    <div class="dfoot"><button class="link-red" data-click="resetCategories">Standard</button><span class="spacer"></span><button class="btn" data-click="closeConfig">Abbrechen</button><button class="btn primary" data-click="saveConfig">Speichern</button></div>
+  </div>
+</div>
+
+<!-- Export -->
+<div id="exportModal" class="modal hidden" data-backdrop="closeExport">
+  <div class="dlg">
+    <div class="dhead"><h3><svg class="i"><use href="#i-download"/></svg>Export</h3><button class="x" data-click="closeExport"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="dbody">
+      <div class="hint" style="margin:0" id="exportInfo"></div>
+      <div class="exprow"><div class="n">Excel (.xlsx)<small>Statistik + Verlauf als echte Excel-Datei</small></div>
+        <button class="btn sm share-only" data-click="exportXlsxShare"><svg class="i"><use href="#i-share"/></svg>Teilen</button>
+        <button class="btn sm primary" data-click="exportXlsxSave"><svg class="i"><use href="#i-download"/></svg>Speichern</button></div>
+      <div class="exprow"><div class="n">CSV<small>Für Excel (Semikolon, deutsch)</small></div>
+        <button class="btn sm share-only" data-click="exportCsvShare"><svg class="i"><use href="#i-share"/></svg>Teilen</button>
+        <button class="btn sm" data-click="exportCsvSave"><svg class="i"><use href="#i-download"/></svg>Speichern</button></div>
+      <div class="exprow"><div class="n">PDF / Drucken<small>Bogen DIN A4 quer, im Druckdialog „Als PDF sichern“</small></div>
+        <button class="btn sm" data-click="exportPrint"><svg class="i"><use href="#i-print"/></svg>Drucken</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- Archiv & Backup -->
+<div id="archiveModal" class="modal hidden" data-backdrop="closeArchive">
+  <div class="dlg">
+    <div class="dhead"><h3><svg class="i"><use href="#i-archive"/></svg>Archiv &amp; Backup</h3><button class="x" data-click="closeArchive"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="dbody">
+      <div id="archiveList" style="display:grid;gap:8px"></div>
+      <hr>
+      <div>
+        <label>Datensicherung</label>
+        <div class="hint" style="margin:0 0 8px">Sichert alle Spiele und Einstellungen in eine Datei, z. B. zum Gerätewechsel.</div>
+        <div class="chips">
+          <button class="btn sm" data-click="backupSave"><svg class="i"><use href="#i-download"/></svg>Backup speichern</button>
+          <button class="btn sm share-only" data-click="backupShare"><svg class="i"><use href="#i-share"/></svg>Backup teilen</button>
+          <button class="btn sm" data-click="backupLoad"><svg class="i"><use href="#i-upload"/></svg>Backup laden</button>
+        </div>
+        <input type="file" id="backupFile" accept=".json,application/json" class="hidden">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sicherheitsabfrage -->
+<div id="askModal" class="modal top hidden">
+  <div class="dlg small">
+    <div class="dbody" style="text-align:center;padding:18px">
+      <h3 id="askTitle" style="font-size:16px"></h3>
+      <p id="askText" style="font-size:13px;color:#cbd5e1"></p>
+    </div>
+    <div class="dfoot"><button class="btn" id="askCancel" style="flex:1">Abbrechen</button><button class="btn danger" id="askOk" style="flex:1">OK</button></div>
+  </div>
+</div>
+
+<!-- Druckbogen -->
+<div id="printSheet"></div>
+
+<!-- Symbole (lokal, damit alles offline funktioniert) -->
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></symbol>
+  <symbol id="i-archive" viewBox="0 0 24 24"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"/></symbol>
+  <symbol id="i-hand" viewBox="0 0 24 24"><path d="M9 11V5a2 2 0 0 1 4 0v6M13 10V4a2 2 0 0 1 4 0v7M17 11a2 2 0 0 1 4 0v3a8 8 0 0 1-8 8h-1a8 8 0 0 1-6.5-3.3L3 14.5a2 2 0 0 1 3.2-2.4L9 15V11"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-15-6.7L3 13"/></symbol>
+  <symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+</svg>
+
+<script>
+'use strict';
+/* ===================== Grunddaten ===================== */
+const DEFAULT_CATEGORIES = [
+  { id: "assists",         name: "Assists",                          points: 2 },
+  { id: "rebounds",        name: "Rebounds",                         points: 1 },
+  { id: "blocks",          name: "Blocks",                           points: 1 },
+  { id: "interceptedPass", name: "Abgefangener Pass",                points: 1 },
+  { id: "steals",          name: "Steals",                           points: 2 },
+  { id: "stealAndScore",   name: "Steal + Score",                    points: 4 },
+  { id: "turnoverFoul",    name: "Turnover / Offensivfoul",          points: -2 },
+  { id: "looseBall",       name: "Freiem Ball nachgehen",            points: 2 },
+  { id: "looseBallGet",    name: "Freiem Ball nachgehen + bekommen", points: 4 }
+];
+const DEFAULT_ROSTER = ["5","6","7","9","10","12","13","16"];
+const PRESETS = [
+  { name: "Foto-Bogen (5–16)", players: ["5","6","7","9","10","12","13","16"] },
+  { name: "Nummern 4 bis 15",  players: ["4","5","6","7","8","9","10","11","12","13","14","15"] }
+];
+const K = { cats: 'etb_categories_config', game: 'etb_game_v2', archive: 'etb_archive_v2', roster: 'etb_last_roster',
+            oldGame: 'etb_basketball_def_app', oldArchive: 'etb_archived_games' };
+
+let categories, game, archive, lastRoster;
+let storageOk = true;
+let selectedPlayer = null;
+let configDraft = null;
+let exportTarget = null;   // { g, cats }
+let bannerEntryId = null, bannerTimer = null;
+let wakeLock = null;
+
+/* ===================== Hilfsfunktionen ===================== */
+const $ = id => document.getElementById(id);
+const clone = o => JSON.parse(JSON.stringify(o));
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2, '0');
+function todayISO() { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+function nowTime() { const d = new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`; }
+function fmtDate(iso) { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || ''); return m ? `${m[3]}.${m[2]}.${m[1]}` : (iso || ''); }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function fmtPts(n) { return (n > 0 ? '+' : '') + n; }
+function safeName(s) { return String(s || 'Spiel').trim().replace(/[^\wäöüÄÖÜß-]+/g, '_').replace(/^_+|_+$/g, '') || 'Spiel'; }
+
+function load(key, fallback) {
+  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch (e) { return fallback; }
+}
+function store(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); }
+  catch (e) { storageOk = false; $('storageWarn').classList.remove('hidden'); }
+}
+function saveGame() { store(K.game, game); }
+
+function toast(msg, ms = 2500) {
+  const t = $('toast'); t.textContent = msg; t.classList.remove('hidden');
+  clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.add('hidden'), ms);
+}
+
+function showM(id) { $(id).classList.remove('hidden'); }
+function hideM(id) { $(id).classList.add('hidden'); }
+
+function ask(title, text, okLabel = 'OK', danger = true) {
+  return new Promise(resolve => {
+    $('askTitle').textContent = title; $('askText').textContent = text;
+    const ok = $('askOk'), cancel = $('askCancel');
+    ok.textContent = okLabel; ok.className = 'btn ' + (danger ? 'danger' : 'primary');
+    const done = v => { hideM('askModal'); ok.onclick = cancel.onclick = null; resolve(v); };
+    ok.onclick = () => done(true); cancel.onclick = () => done(false);
+    showM('askModal');
+  });
+}
+
+/* ===================== Auswertung ===================== */
+// Alle Werte werden aus dem Verlauf berechnet -> Verlauf und Tabelle können nie auseinanderlaufen.
+function allPlayers(g) {
+  const list = [...g.players];
+  g.history.forEach(h => { if (!list.includes(h.player)) list.push(h.player); });
+  return list;
+}
+function tally(g) {
+  const c = {};
+  allPlayers(g).forEach(p => c[p] = {});
+  g.history.forEach(h => { c[h.player][h.cat] = (c[h.player][h.cat] || 0) + 1; });
+  return c;
+}
+function pointsOf(counts, cats) { return cats.reduce((s, k) => s + (counts[k.id] || 0) * k.points, 0); }
+function catById(cats, id) { return cats.find(c => c.id === id); }
+
+/* ===================== Start & Migration ===================== */
+function newGame(players) {
+  return { id: uid(), opponent: '', date: todayISO(), players: [...players], history: [] };
+}
+
+function init() {
+  try { localStorage.setItem('__t', '1'); localStorage.removeItem('__t'); }
+  catch (e) { storageOk = false; $('storageWarn').classList.remove('hidden'); }
+
+  categories = load(K.cats, null) || clone(DEFAULT_CATEGORIES);
+  lastRoster = load(K.roster, null) || DEFAULT_ROSTER;
+  game = load(K.game, null);
+  archive = load(K.archive, null);
+
+  // Daten der alten Version übernehmen (falls vorhanden)
+  if (!game) {
+    const old = load(K.oldGame, null);
+    if (old && Array.isArray(old.history)) {
+      game = { id: uid(), opponent: old.opponent || '', date: old.date || todayISO(), players: (old.players || DEFAULT_ROSTER).map(String),
+               history: old.history.slice().reverse().map(h => ({ id: uid(), time: h.timestamp || '', player: String(h.player), cat: h.categoryId })) };
+      saveGame();
+    }
+  }
+  if (!archive) {
+    archive = [];
+    (load(K.oldArchive, []) || []).forEach(a => {
+      const hist = [];
+      Object.entries(a.stats || {}).forEach(([p, st]) => Object.entries(st).forEach(([cat, n]) => { for (let i = 0; i < n; i++) hist.push({ id: uid(), time: '', player: p, cat }); }));
+      archive.push({ id: uid(), opponent: a.opponent || '', date: a.date || '', players: Object.keys(a.stats || {}), categories: clone(categories), history: hist, finishedAt: a.id || Date.now() });
+    });
+    store(K.archive, archive);
+  }
+  const firstStart = !game;
+  if (!game) { game = newGame(lastRoster); saveGame(); }
+
+  document.addEventListener('click', onClick);
+  document.querySelectorAll('.modal[data-backdrop]').forEach(m => m.addEventListener('click', e => { if (e.target === m) actions[m.dataset.backdrop](); }));
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && game.history.length) keepAwake(); });
+  $('backupFile').addEventListener('change', onBackupFile);
+  if (!canShareFiles()) document.querySelectorAll('.share-only').forEach(b => b.classList.add('hidden'));
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});
+
+  render();
+  if (firstStart) actions.openSetup();
+}
+
+/* ===================== Darstellung ===================== */
+function render() {
+  $('gameInfo').textContent = (game.opponent ? 'Gegner: ' + game.opponent : 'Kein Gegner eingetragen') + ' · ' + fmtDate(game.date);
+  const counts = tally(game);
+
+  // Kacheln
+  $('playerGrid').innerHTML = game.players.map(p => {
+    const pts = pointsOf(counts[p] || {}, categories);
+    const n = game.history.filter(h => h.player === p).length;
+    return `<button class="tile" data-click="openAction" data-p="${esc(p)}">
+      <span class="pts ${pts < 0 ? 'neg' : ''}">${pts} P</span>
+      <span class="num">#${esc(p)}</span><span class="cnt">${n} Aktion${n === 1 ? '' : 'en'}</span></button>`;
+  }).join('') || '<p class="empty">Keine Spieler – bitte über „Kader“ Nummern eintragen.</p>';
+
+  // Tabelle
+  const players = allPlayers(game);
+  let team = 0;
+  const colSum = {};
+  let html = '<thead><tr><th>#</th>' + categories.map(c => `<th>${esc(c.name)}<small class="${c.points < 0 ? 'neg' : ''}">${fmtPts(c.points)} P</small></th>`).join('') + '<th class="tot">Gesamt</th></tr></thead><tbody>';
+  players.forEach(p => {
+    const st = counts[p] || {}; const pts = pointsOf(st, categories); team += pts;
+    html += `<tr class="${game.players.includes(p) ? '' : 'gone'}"><td>#${esc(p)}</td>` + categories.map(c => {
+      const v = st[c.id] || 0; colSum[c.id] = (colSum[c.id] || 0) + v;
+      return `<td class="${v ? '' : 'zero'}">${v}</td>`;
+    }).join('') + `<td class="tot">${pts}</td></tr>`;
+  });
+  html += '<tr class="sum"><td>Team</td>' + categories.map(c => `<td>${colSum[c.id] || 0}</td>`).join('') + `<td class="tot">${team}</td></tr></tbody>`;
+  $('statsTable').innerHTML = html;
+  $('teamPoints').textContent = team;
+
+  // Verlauf (neueste oben, vollständig)
+  $('logCount').textContent = game.history.length;
+  $('log').innerHTML = game.history.length ? game.history.slice().reverse().map(h => {
+    const c = catById(categories, h.cat);
+    return `<div class="logrow"><span class="t">${esc(h.time)}</span><span class="p">#${esc(h.player)}</span>
+      <span class="n">${esc(c ? c.name : '(gelöschtes Ereignis)')}</span><span class="v">${c ? fmtPts(c.points) : ''}</span>
+      <button data-click="deleteEntry" data-id="${esc(h.id)}" title="Eintrag löschen"><svg class="i"><use href="#i-x"/></svg></button></div>`;
+  }).join('') : '<p class="empty">Noch keine Aktionen erfasst.</p>';
+
+  $('undoBtn').disabled = game.history.length === 0;
+}
+
+/* ===================== Erfassen ===================== */
+function recordAction(catId) {
+  if (selectedPlayer == null) return;
+  const c = catById(categories, catId); if (!c) return;
+  const entry = { id: uid(), time: nowTime(), player: selectedPlayer, cat: catId };
+  game.history.push(entry);
+  saveGame();
+  hideM('actionModal');
+  render();
+  if (navigator.vibrate) navigator.vibrate(25);
+  showBanner(entry, c);
+  selectedPlayer = null;
+}
+
+function showBanner(entry, cat) {
+  bannerEntryId = entry.id;
+  $('bannerText').textContent = `#${entry.player} – ${cat.name}`;
+  const bar = $('bannerBar'); bar.classList.remove('run'); void bar.offsetWidth; bar.classList.add('run');
+  showM('banner');
+  clearTimeout(bannerTimer); bannerTimer = setTimeout(hideBanner, 7000);
+}
+function hideBanner() { clearTimeout(bannerTimer); bannerEntryId = null; hideM('banner'); }
+
+function removeEntry(id) {
+  const i = game.history.findIndex(h => h.id === id);
+  if (i < 0) return false;
+  game.history.splice(i, 1); saveGame(); render(); return true;
+}
+
+async function keepAwake() {
+  // Hält den Bildschirm während des Spiels an (wo vom Browser unterstützt)
+  try {
+    if ('wakeLock' in navigator && !wakeLock && document.visibilityState === 'visible') {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    }
+  } catch (e) { /* nicht unterstützt */ }
+}
+
+/* ===================== Export ===================== */
+function statRows(g, cats) {
+  const counts = tally(g); const players = allPlayers(g);
+  const rows = []; const colSum = {}; let team = 0;
+  players.forEach(p => {
+    const st = counts[p]; const pts = pointsOf(st, cats); team += pts;
+    rows.push({ p, vals: cats.map(c => { const v = st[c.id] || 0; colSum[c.id] = (colSum[c.id] || 0) + v; return v; }), pts });
+  });
+  return { rows, sums: cats.map(c => colSum[c.id] || 0), team };
+}
+
+function buildCsv(g, cats) {
+  const q = v => { const s = String(v); return /[;"\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+  const { rows, sums, team } = statRows(g, cats);
+  const lines = [
+    ['ETB Defensive Point Club'], ['Gegner/Spiel', g.opponent || ''], ['Datum', fmtDate(g.date)], [],
+    ['Nummer', ...cats.map(c => c.name), 'Gesamtpunkte'],
+    ['Punktwert', ...cats.map(c => c.points), ''],
+    ...rows.map(r => ['#' + r.p, ...r.vals, r.pts]),
+    ['Team', ...sums, team]
+  ];
+  return new Blob(['﻿' + lines.map(l => l.map(q).join(';')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
+}
+
+// --- Minimaler XLSX-Generator (ZIP ohne Kompression), keine externe Bibliothek nötig ---
+function crc32(b) {
+  let t = crc32.t;
+  if (!t) { t = crc32.t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } }
+  let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = t[(c ^ b[i]) & 255] ^ (c >>> 8);
+  return (c ^ 0xFFFFFFFF) >>> 0;
+}
+function makeZip(files, mime) {
+  const enc = new TextEncoder(), parts = [], central = []; let offset = 0;
+  const d = new Date();
+  const dt = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1);
+  const dd = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+  for (const f of files) {
+    const name = enc.encode(f.name), data = enc.encode(f.data), crc = crc32(data);
+    const lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(8, 0, true);
+    lh.setUint16(10, dt, true); lh.setUint16(12, dd, true); lh.setUint32(14, crc, true);
+    lh.setUint32(18, data.length, true); lh.setUint32(22, data.length, true); lh.setUint16(26, name.length, true); lh.setUint16(28, 0, true);
+    parts.push(lh, name, data);
+    const ch = new DataView(new ArrayBuffer(46));
+    ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true); ch.setUint16(10, 0, true);
+    ch.setUint16(12, dt, true); ch.setUint16(14, dd, true); ch.setUint32(16, crc, true);
+    ch.setUint32(20, data.length, true); ch.setUint32(24, data.length, true); ch.setUint16(28, name.length, true);
+    ch.setUint32(42, offset, true);
+    central.push(ch, name);
+    offset += 30 + name.length + data.length;
+  }
+  const cdSize = central.reduce((s, p) => s + p.byteLength, 0);
+  const end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0, 0x06054b50, true); end.setUint16(8, files.length, true); end.setUint16(10, files.length, true);
+  end.setUint32(12, cdSize, true); end.setUint32(16, offset, true);
+  return new Blob([...parts, ...central, end], { type: mime });
+}
+function xmlEsc(s) { return String(s).replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c])).replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, ''); }
+function colName(i) { let s = ''; i++; while (i > 0) { const m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1) / 26); } return s; }
+function sheetXml(rows, widths) {
+  let x = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">';
+  if (widths) x += '<cols>' + widths.map((w, i) => `<col min="${i + 1}" max="${i + 1}" width="${w}" customWidth="1"/>`).join('') + '</cols>';
+  x += '<sheetData>';
+  rows.forEach((row, r) => {
+    x += `<row r="${r + 1}">`;
+    row.forEach((cell, c) => {
+      if (cell === null || cell === undefined || cell === '') return;
+      const o = typeof cell === 'object' ? cell : { v: cell };
+      if (o.v === '' || o.v === null || o.v === undefined) return;
+      const ref = colName(c) + (r + 1), s = o.s ? ` s="${o.s}"` : '';
+      x += typeof o.v === 'number' ? `<c r="${ref}"${s}><v>${o.v}</v></c>` : `<c r="${ref}"${s} t="inlineStr"><is><t xml:space="preserve">${xmlEsc(o.v)}</t></is></c>`;
+    });
+    x += '</row>';
+  });
+  return x + '</sheetData></worksheet>';
+}
+function buildXlsx(g, cats) {
+  const B = v => ({ v, s: 1 }), H = v => ({ v, s: 2 });
+  const { rows, sums, team } = statRows(g, cats);
+  const s1 = [
+    [B('ETB Defensive Point Club')], ['Gegner/Spiel', g.opponent || ''], ['Datum', fmtDate(g.date)], [],
+    [H('Nummer'), ...cats.map(c => H(c.name)), H('Gesamtpunkte')],
+    ['Punktwert', ...cats.map(c => c.points), ''],
+    ...rows.map(r => ['#' + r.p, ...r.vals, B(r.pts)]),
+    [B('Team'), ...sums.map(B), B(team)]
+  ];
+  const s2 = [[H('Zeit'), H('Spieler'), H('Ereignis'), H('Punkte')],
+    ...g.history.map(h => { const c = catById(cats, h.cat); return [h.time || '', '#' + h.player, c ? c.name : '(gelöscht)', c ? c.points : '']; })];
+  const ns = 'http://schemas.openxmlformats.org';
+  const files = [
+    { name: '[Content_Types].xml', data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="${ns}/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/worksheets/sheet2.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>` },
+    { name: '_rels/.rels', data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="${ns}/package/2006/relationships"><Relationship Id="rId1" Type="${ns}/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>` },
+    { name: 'xl/workbook.xml', data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="${ns}/spreadsheetml/2006/main" xmlns:r="${ns}/officeDocument/2006/relationships"><sheets><sheet name="Statistik" sheetId="1" r:id="rId1"/><sheet name="Verlauf" sheetId="2" r:id="rId2"/></sheets></workbook>` },
+    { name: 'xl/_rels/workbook.xml.rels', data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="${ns}/package/2006/relationships"><Relationship Id="rId1" Type="${ns}/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="${ns}/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet2.xml"/><Relationship Id="rId3" Type="${ns}/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>` },
+    { name: 'xl/styles.xml', data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="${ns}/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFDE68A"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/></cellXfs><cellStyles count="1"><cellStyle name="Standard" xfId="0" builtinId="0"/></cellStyles></styleSheet>` },
+    { name: 'xl/worksheets/sheet1.xml', data: sheetXml(s1, [16, ...cats.map(() => 13), 14]) },
+    { name: 'xl/worksheets/sheet2.xml', data: sheetXml(s2, [10, 10, 34, 9]) }
+  ];
+  return makeZip(files, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+}
+
+function canShareFiles() {
+  try { return !!(navigator.canShare && navigator.canShare({ files: [new File(['x'], 't.csv', { type: 'text/csv' })] })); } catch (e) { return false; }
+}
+function downloadFile(blob, name) {
+  try {
+    const url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = name; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 60000); // nicht sofort freigeben, sonst bricht der Download auf manchen Geräten ab
+    toast('Datei wird gespeichert: ' + name);
+  } catch (e) { toast('Speichern nicht möglich – bitte „Teilen“ verwenden.', 4000); }
+}
+async function shareFile(blob, name) {
+  const file = new File([blob], name, { type: blob.type });
+  if (!(navigator.canShare && navigator.canShare({ files: [file] }))) { toast('Teilen für diesen Dateityp nicht möglich – Datei wird gespeichert.'); return downloadFile(blob, name); }
+  try { await navigator.share({ files: [file], title: name }); }
+  catch (e) { if (e.name !== 'AbortError') downloadFile(blob, name); }
+}
+function exportName(ext) { const g = exportTarget.g; return `ETB_DPC_${g.date || todayISO()}_${safeName(g.opponent)}.${ext}`; }
+
+function renderPrint(g, cats) {
+  const { rows, sums, team } = statRows(g, cats);
+  $('printSheet').innerHTML = `<h1>ETB Defensive Point Club</h1>
+    <div class="meta"><span>Spiel: <b>${esc(g.opponent || '____________________')}</b></span><span>Datum: <b>${esc(fmtDate(g.date))}</b></span></div>
+    <table><thead><tr><th>Nr.</th>${cats.map(c => `<th>${esc(c.name)}</th>`).join('')}<th>Gesamtpunkte</th></tr></thead><tbody>
+    <tr class="pv"><td>Punkte</td>${cats.map(c => `<td>${c.points}</td>`).join('')}<td></td></tr>
+    ${rows.map(r => `<tr><td><b>#${esc(r.p)}</b></td>${r.vals.map(v => `<td>${v || ''}</td>`).join('')}<td><b>${r.pts}</b></td></tr>`).join('')}
+    <tr class="sum"><td>Team</td>${sums.map(v => `<td>${v}</td>`).join('')}<td>${team}</td></tr></tbody></table>
+    <div class="foot"><span>ETB Defensive Point Club – Digital Tracker</span><span>Erstellt am ${esc(new Date().toLocaleString('de-DE'))}</span></div>`;
+}
+
+/* ===================== Archiv & Backup ===================== */
+function renderArchive() {
+  $('archiveList').innerHTML = archive.length ? archive.slice().reverse().map(a => {
+    const { team } = statRows(a, a.categories);
+    return `<div class="arch"><div class="h"><span>${esc(a.opponent || 'Ohne Gegner')}<br><small>${esc(fmtDate(a.date))} · ${a.history.length} Aktionen</small></span><span style="color:var(--accent)">${team} P</span></div>
+      <div class="b"><button class="btn sm" data-click="archiveExport" data-id="${esc(a.id)}"><svg class="i"><use href="#i-download"/></svg>Export</button>
+      <button class="btn sm ghost-red" data-click="archiveDelete" data-id="${esc(a.id)}"><svg class="i"><use href="#i-trash"/></svg>Löschen</button></div></div>`;
+  }).join('') : '<p class="empty">Noch keine beendeten Spiele. Spiele landen hier nach „Beenden“.</p>';
+}
+function backupBlob() {
+  return new Blob([JSON.stringify({ app: 'etb-dpc', version: 2, exported: new Date().toISOString(), categories, lastRoster, game, archive }, null, 1)], { type: 'application/json' });
+}
+async function onBackupFile(e) {
+  const f = e.target.files[0]; e.target.value = '';
+  if (!f) return;
+  try {
+    const d = JSON.parse(await f.text());
+    if (d.app !== 'etb-dpc' || !Array.isArray(d.categories) || !d.game || !Array.isArray(d.archive)) throw new Error('Format');
+    if (!await ask('Backup laden?', 'Alle aktuellen Daten auf diesem Gerät werden durch das Backup ersetzt.', 'Ersetzen')) return;
+    categories = d.categories; game = d.game; archive = d.archive; lastRoster = d.lastRoster || lastRoster;
+    store(K.cats, categories); saveGame(); store(K.archive, archive); store(K.roster, lastRoster);
+    render(); renderArchive(); toast('Backup geladen');
+  } catch (err) { toast('Diese Datei ist kein gültiges Backup.', 4000); }
+}
+
+/* ===================== Ereignis-Konfiguration ===================== */
+function renderConfig() {
+  $('catList').innerHTML = configDraft.map((c, i) => `<div class="catrow">
+    <div class="mv"><button data-click="catUp" data-i="${i}" ${i === 0 ? 'disabled' : ''}><svg class="i"><use href="#i-up"/></svg></button>
+    <button data-click="catDown" data-i="${i}" ${i === configDraft.length - 1 ? 'disabled' : ''}><svg class="i"><use href="#i-down"/></svg></button></div>
+    <input class="name" type="text" value="${esc(c.name)}" data-i="${i}" data-k="name">
+    <input class="pts" type="number" inputmode="numeric" value="${c.points}" data-i="${i}" data-k="points">
+    <button data-click="catRemove" data-i="${i}" title="Entfernen"><svg class="i"><use href="#i-trash"/></svg></button></div>`).join('');
+  $('catList').querySelectorAll('input').forEach(inp => inp.addEventListener('input', () => {
+    const i = +inp.dataset.i;
+    if (inp.dataset.k === 'name') configDraft[i].name = inp.value;
+    else configDraft[i].points = parseInt(inp.value, 10) || 0;
+  }));
+}
+
+/* ===================== Aktionen (Buttons) ===================== */
+const actions = {
+  openAction(el) {
+    selectedPlayer = el.dataset.p;
+    $('actionBadge').textContent = '#' + selectedPlayer;
+    const st = tally(game)[selectedPlayer] || {};
+    $('actionPlayerInfo').textContent = `Bisher ${pointsOf(st, categories)} Punkte`;
+    $('actionGrid').innerHTML = categories.map(c => `<button class="act ${c.points < 0 ? 'neg' : ''}" data-click="record" data-cat="${esc(c.id)}">${esc(c.name)}</button>`).join('');
+    showM('actionModal');
+    keepAwake();
+  },
+  closeAction() { selectedPlayer = null; hideM('actionModal'); },
+  record(el) { recordAction(el.dataset.cat); },
+
+  bannerUndo() {
+    if (bannerEntryId && removeEntry(bannerEntryId)) toast('Rückgängig gemacht');
+    hideBanner();
+  },
+  async requestUndo() {
+    const last = game.history[game.history.length - 1]; if (!last) return;
+    const c = catById(categories, last.cat);
+    if (await ask('Letzte Aktion löschen?', `„${c ? c.name : 'Ereignis'}“ für Spieler #${last.player} (${last.time}) wird entfernt.`, 'Löschen')) { removeEntry(last.id); hideBanner(); }
+  },
+  async deleteEntry(el) {
+    const h = game.history.find(x => x.id === el.dataset.id); if (!h) return;
+    const c = catById(categories, h.cat);
+    if (await ask('Eintrag löschen?', `„${c ? c.name : 'Ereignis'}“ für Spieler #${h.player} (${h.time})`, 'Löschen')) { removeEntry(h.id); if (bannerEntryId === h.id) hideBanner(); }
+  },
+  async clearGame() {
+    if (!game.history.length) return;
+    if (await ask('Alles zurücksetzen?', 'Alle Aktionen dieses Spiels werden gelöscht. Gegner, Datum und Kader bleiben.', 'Zurücksetzen')) { game.history = []; saveGame(); render(); hideBanner(); }
+  },
+  async finishGame() {
+    if (!game.history.length) {
+      if (!await ask('Neues Spiel starten?', 'Im aktuellen Spiel wurde noch nichts erfasst. Es wird nicht archiviert.', 'Neues Spiel', false)) return;
+    } else {
+      if (!await ask('Spiel beenden?', 'Das Spiel wird im Archiv gespeichert (dort jederzeit exportierbar) und ein neues Spiel beginnt.', 'Beenden', false)) return;
+      archive.push({ ...clone(game), categories: clone(categories), finishedAt: Date.now() });
+      store(K.archive, archive);
+    }
+    game = newGame(game.players); saveGame(); hideBanner(); render();
+    actions.openSetup();
+  },
+
+  openSetup() {
+    $('setupOpponent').value = game.opponent || '';
+    $('setupDate').value = game.date || todayISO();
+    $('setupRoster').value = game.players.join(', ');
+    $('presetChips').innerHTML = PRESETS.map((p, i) => `<button class="btn sm" data-click="applyPreset" data-i="${i}">${esc(p.name)}</button>`).join('');
+    showM('setupModal');
+  },
+  closeSetup() { hideM('setupModal'); },
+  applyPreset(el) { $('setupRoster').value = PRESETS[+el.dataset.i].players.join(', '); },
+  saveSetup() {
+    const players = [...new Set($('setupRoster').value.split(/[\s,;]+/).map(s => s.trim().replace(/^#/, '')).filter(Boolean))];
+    if (!players.length) { toast('Bitte mindestens eine Trikotnummer eintragen.'); return; }
+    game.opponent = $('setupOpponent').value.trim();
+    game.date = $('setupDate').value || todayISO();
+    game.players = players;
+    lastRoster = players; store(K.roster, lastRoster);
+    saveGame(); render(); hideM('setupModal');
+  },
+
+  openConfig() { configDraft = clone(categories); renderConfig(); showM('configModal'); },
+  closeConfig() { configDraft = null; hideM('configModal'); },
+  catUp(el) { const i = +el.dataset.i; [configDraft[i - 1], configDraft[i]] = [configDraft[i], configDraft[i - 1]]; renderConfig(); },
+  catDown(el) { const i = +el.dataset.i; [configDraft[i + 1], configDraft[i]] = [configDraft[i], configDraft[i + 1]]; renderConfig(); },
+  catRemove(el) { if (configDraft.length <= 1) return toast('Mindestens ein Ereignis wird benötigt.'); configDraft.splice(+el.dataset.i, 1); renderConfig(); },
+  addCategory() { configDraft.push({ id: 'cat_' + uid(), name: 'Neues Ereignis', points: 1 }); renderConfig(); const inputs = $('catList').querySelectorAll('input.name'); inputs[inputs.length - 1].focus(); },
+  async resetCategories() { if (await ask('Standard wiederherstellen?', 'Die Ereignisliste wird auf die Standardwerte zurückgesetzt (erst nach „Speichern“ wirksam).', 'Zurücksetzen')) { configDraft = clone(DEFAULT_CATEGORIES); renderConfig(); } },
+  async saveConfig() {
+    if (configDraft.some(c => !c.name.trim())) return toast('Jedes Ereignis braucht einen Namen.');
+    configDraft.forEach(c => c.name = c.name.trim());
+    const removed = categories.filter(c => !configDraft.some(d => d.id === c.id));
+    const used = game.history.filter(h => removed.some(r => r.id === h.cat)).length;
+    if (used && !await ask('Ereignis wird verwendet', `${used} erfasste Aktion(en) im laufenden Spiel gehören zu entfernten Ereignissen und zählen dann nicht mehr.`, 'Trotzdem speichern')) return;
+    categories = configDraft; configDraft = null;
+    store(K.cats, categories); render(); hideM('configModal');
+  },
+
+  openExportCurrent() {
+    exportTarget = { g: game, cats: categories };
+    $('exportInfo').textContent = `Aktuelles Spiel: ${game.opponent || 'ohne Gegner'} · ${fmtDate(game.date)} · ${game.history.length} Aktionen`;
+    showM('exportModal');
+  },
+  closeExport() { hideM('exportModal'); },
+  exportXlsxSave() { downloadFile(buildXlsx(exportTarget.g, exportTarget.cats), exportName('xlsx')); },
+  exportXlsxShare() { shareFile(buildXlsx(exportTarget.g, exportTarget.cats), exportName('xlsx')); },
+  exportCsvSave() { downloadFile(buildCsv(exportTarget.g, exportTarget.cats), exportName('csv')); },
+  exportCsvShare() { shareFile(buildCsv(exportTarget.g, exportTarget.cats), exportName('csv')); },
+  exportPrint() { renderPrint(exportTarget.g, exportTarget.cats); hideM('exportModal'); setTimeout(() => window.print(), 50); },
+
+  openArchive() { renderArchive(); showM('archiveModal'); },
+  closeArchive() { hideM('archiveModal'); },
+  archiveExport(el) {
+    const a = archive.find(x => x.id === el.dataset.id); if (!a) return;
+    exportTarget = { g: a, cats: a.categories };
+    $('exportInfo').textContent = `Archiv: ${a.opponent || 'ohne Gegner'} · ${fmtDate(a.date)} · ${a.history.length} Aktionen`;
+    showM('exportModal');
+  },
+  async archiveDelete(el) {
+    const a = archive.find(x => x.id === el.dataset.id); if (!a) return;
+    if (await ask('Archiviertes Spiel löschen?', `${a.opponent || 'Ohne Gegner'} (${fmtDate(a.date)}) wird endgültig gelöscht.`, 'Löschen')) {
+      archive = archive.filter(x => x.id !== a.id); store(K.archive, archive); renderArchive();
+    }
+  },
+  backupSave() { downloadFile(backupBlob(), `ETB_DPC_Backup_${todayISO()}.json`); },
+  backupShare() { shareFile(backupBlob(), `ETB_DPC_Backup_${todayISO()}.json`); },
+  backupLoad() { $('backupFile').click(); }
+};
+
+function onClick(e) {
+  const el = e.target.closest('[data-click]');
+  if (!el || el.disabled) return;
+  const fn = actions[el.dataset.click];
+  if (fn) { e.preventDefault(); fn(el); }
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

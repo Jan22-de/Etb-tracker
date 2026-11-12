@@ -99,6 +99,7 @@ table.stats tr.gone td:first-child{color:var(--muted);font-style:italic}
 /* Dialoge */
 .modal{position:fixed;inset:0;z-index:50;background:rgba(2,6,23,.85);display:flex;align-items:center;justify-content:center;padding:10px}
 .modal.top{z-index:70}
+#exportModal{z-index:60} /* liegt über dem Archiv-Dialog */
 .dlg{background:var(--panel);border:1px solid var(--line);border-radius:16px;width:100%;max-width:520px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.6)}
 .dlg.small{max-width:340px}
 .dhead{background:var(--panel2);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line)}

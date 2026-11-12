@@ -111,17 +111,31 @@ table.stats tr.gone td:first-child{color:var(--muted);font-style:italic}
 .dfoot .spacer{flex:1}
 .badge{background:var(--accent);color:#0b1220;font-size:24px;font-weight:900;min-width:46px;height:46px;padding:0 6px;border-radius:12px;display:flex;align-items:center;justify-content:center}
 .actgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
-.act{min-height:68px;border-radius:12px;border:2px solid var(--line);background:var(--panel2);font-weight:800;font-size:15px;text-align:left;padding:10px 12px;line-height:1.2;display:flex;align-items:center}
-.act:active{background:var(--accent);color:#0b1220;transform:scale(.97)}
-.act.neg{border-color:rgba(225,29,72,.5);background:rgba(225,29,72,.12)}
-.act.neg:active{background:var(--danger);color:#fff}
+.actgroups{display:grid;gap:12px}
+.grp{display:grid;gap:7px}
+.grp h4{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--gc);display:flex;align-items:center;gap:7px}
+.grp h4::after{content:'';flex:1;height:1px;background:var(--gc);opacity:.35}
+.act{min-height:54px;border-radius:12px;border:1px solid var(--line);border-left:6px solid var(--gc);background:var(--panel2);font-weight:800;font-size:16px;text-align:left;padding:8px 12px;line-height:1.2;display:flex;align-items:center}
+.act.wide{grid-column:1/-1}
+.act:active{background:var(--gc);color:#0b1220;transform:scale(.97)}
+/* Aktionsmenü als Leiste von unten (Daumenbereich) */
+#actionModal{align-items:flex-end;padding:0}
+#actionModal .dlg{border-radius:18px 18px 0 0;max-height:90vh;padding-bottom:env(safe-area-inset-bottom);border-bottom:0}
+@media(min-width:640px){#actionModal{align-items:center;padding:10px}#actionModal .dlg{border-radius:16px;border-bottom:1px solid var(--line)}}
+.tplchip{display:inline-flex;align-items:stretch;border:1px solid var(--line);border-radius:10px;background:var(--panel2);overflow:hidden}
+.tplchip button{padding:8px 10px;font-size:12px;font-weight:700}
+.tplchip button.del{color:var(--dim);border-left:1px solid var(--line);padding:8px}
+.saverow{display:flex;gap:6px;margin-top:8px}
+.saverow input{flex:1;min-width:0}
+.box{border:1px solid var(--line);border-radius:12px;padding:10px;background:rgba(30,41,59,.35)}
 .row2{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:10px}
 @media(max-width:420px){.row2{grid-template-columns:minmax(0,1fr)}}
 .hint{font-size:11px;color:var(--muted);margin-top:4px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
-.catrow{display:flex;gap:6px;align-items:center;background:rgba(30,41,59,.6);border:1px solid var(--line);border-radius:10px;padding:6px}
-.catrow input.name{flex:1}
-.catrow input.pts{width:70px;text-align:center;font-family:ui-monospace,monospace}
+.catrow{display:grid;grid-template-columns:auto minmax(0,1fr) 64px auto;gap:6px;align-items:center;background:rgba(30,41,59,.6);border:1px solid var(--line);border-left:5px solid var(--gc,var(--line));border-radius:10px;padding:6px}
+.catrow .mv{grid-row:1/3}
+.catrow input.grpin{grid-column:2/4;font-size:14px;padding:6px 9px;color:var(--muted)}
+.catrow input.pts{text-align:center;font-family:ui-monospace,monospace}
 .catrow button{color:var(--dim);padding:8px}
 .catrow .mv{display:flex;flex-direction:column}
 .catrow .mv button{padding:2px 6px}
@@ -217,8 +231,7 @@ hr{border:0;border-top:1px solid var(--line)}
       </div>
       <button class="x" data-click="closeAction"><svg class="i"><use href="#i-x"/></svg></button>
     </div>
-    <div class="dbody"><div class="actgrid" id="actionGrid"></div></div>
-    <div class="dfoot"><button class="btn" style="width:100%" data-click="closeAction">Abbrechen</button></div>
+    <div class="dbody"><div class="actgroups" id="actionGrid"></div></div>
   </div>
 </div>
 
@@ -236,9 +249,10 @@ hr{border:0;border-top:1px solid var(--line)}
         <input id="setupRoster" type="text" inputmode="numeric" placeholder="5, 6, 7, 9, 10, 12, 13, 16" autocomplete="off">
         <div class="hint">Legt fest, welche Kacheln erscheinen. Bereits erfasste Werte bleiben erhalten, auch wenn eine Nummer entfernt wird.</div>
       </div>
-      <div>
-        <label>Vorlagen</label>
+      <div class="box">
+        <label>Kader-Vorlagen</label>
         <div class="chips" id="presetChips"></div>
+        <div class="saverow"><input id="rosterTplName" type="text" placeholder="Name, z. B. U12 Heimspiel" autocomplete="off"><button class="btn sm" data-click="saveRosterTpl">Nummern speichern</button></div>
       </div>
     </div>
     <div class="dfoot"><button class="btn" data-click="closeSetup">Abbrechen</button><button class="btn primary" data-click="saveSetup">Speichern</button></div>
@@ -250,11 +264,18 @@ hr{border:0;border-top:1px solid var(--line)}
   <div class="dlg">
     <div class="dhead"><h3><svg class="i"><use href="#i-gear"/></svg>Ereignisse &amp; Punkte</h3><button class="x" data-click="closeConfig"><svg class="i"><use href="#i-x"/></svg></button></div>
     <div class="dbody">
-      <div class="hint" style="margin:0">Name und Punktwert anpassen, Reihenfolge mit den Pfeilen ändern. Punktänderungen gelten auch rückwirkend für das laufende Spiel.</div>
+      <div class="box">
+        <label>Ereignis-Vorlagen</label>
+        <div class="hint" style="margin:0 0 8px">Antippen lädt die Vorlage hier in die Liste. Übernommen wird sie erst mit „Speichern“.</div>
+        <div class="chips" id="evTplChips"></div>
+        <div class="saverow"><input id="evTplName" type="text" placeholder="Name für die aktuelle Liste" autocomplete="off"><button class="btn sm" data-click="saveEvTpl">Als Vorlage speichern</button></div>
+      </div>
+      <div class="hint" style="margin:0">Pro Ereignis: Name, Punkte und darunter die Gruppe (= Überschrift im Erfassungsmenü). Reihenfolge mit den Pfeilen. Punktänderungen gelten auch rückwirkend für das laufende Spiel.</div>
       <div id="catList" style="display:grid;gap:6px"></div>
+      <datalist id="groupList"></datalist>
       <button class="btn" data-click="addCategory"><svg class="i"><use href="#i-plus"/></svg>Ereignis hinzufügen</button>
     </div>
-    <div class="dfoot"><button class="link-red" data-click="resetCategories">Standard</button><span class="spacer"></span><button class="btn" data-click="closeConfig">Abbrechen</button><button class="btn primary" data-click="saveConfig">Speichern</button></div>
+    <div class="dfoot"><button class="btn" data-click="closeConfig">Abbrechen</button><button class="btn primary" data-click="saveConfig">Speichern</button></div>
   </div>
 </div>
 
@@ -281,19 +302,30 @@ hr{border:0;border-top:1px solid var(--line)}
 <!-- Archiv & Backup -->
 <div id="archiveModal" class="modal hidden" data-backdrop="closeArchive">
   <div class="dlg">
-    <div class="dhead"><h3><svg class="i"><use href="#i-archive"/></svg>Archiv &amp; Backup</h3><button class="x" data-click="closeArchive"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="dhead"><h3><svg class="i"><use href="#i-archive"/></svg>Archiv &amp; Sicherung</h3><button class="x" data-click="closeArchive"><svg class="i"><use href="#i-x"/></svg></button></div>
     <div class="dbody">
       <div id="archiveList" style="display:grid;gap:8px"></div>
       <hr>
       <div>
-        <label>Datensicherung</label>
-        <div class="hint" style="margin:0 0 8px">Sichert alle Spiele und Einstellungen in eine Datei, z. B. zum Gerätewechsel.</div>
+        <label>Komplette Sicherung</label>
+        <div class="hint" style="margin:0 0 8px">Alle Spiele, Archiv und Einstellungen in einer Datei, z. B. zum Gerätewechsel.</div>
         <div class="chips">
           <button class="btn sm" data-click="backupSave"><svg class="i"><use href="#i-download"/></svg>Backup speichern</button>
           <button class="btn sm share-only" data-click="backupShare"><svg class="i"><use href="#i-share"/></svg>Backup teilen</button>
           <button class="btn sm" data-click="backupLoad"><svg class="i"><use href="#i-upload"/></svg>Backup laden</button>
         </div>
         <input type="file" id="backupFile" accept=".json,application/json" class="hidden">
+      </div>
+      <hr>
+      <div>
+        <label>Nur Einstellungen sichern</label>
+        <div class="hint" style="margin:0 0 8px">Ereignisse, Ereignis- und Kader-Vorlagen – ohne Spiele. Gut, um die Einrichtung an andere Helfer weiterzugeben.</div>
+        <div class="chips">
+          <button class="btn sm" data-click="settingsSave"><svg class="i"><use href="#i-download"/></svg>Speichern</button>
+          <button class="btn sm share-only" data-click="settingsShare"><svg class="i"><use href="#i-share"/></svg>Teilen</button>
+          <button class="btn sm" data-click="settingsLoad"><svg class="i"><use href="#i-upload"/></svg>Laden</button>
+        </div>
+        <input type="file" id="settingsFile" accept=".json,application/json" class="hidden">
       </div>
     </div>
   </div>
@@ -338,26 +370,33 @@ hr{border:0;border-top:1px solid var(--line)}
 <script>
 'use strict';
 /* ===================== Grunddaten ===================== */
+// group = Überschrift im Erfassungsmenü
 const DEFAULT_CATEGORIES = [
-  { id: "assists",         name: "Assists",                          points: 2 },
-  { id: "rebounds",        name: "Rebounds",                         points: 1 },
-  { id: "blocks",          name: "Blocks",                           points: 1 },
-  { id: "interceptedPass", name: "Abgefangener Pass",                points: 1 },
-  { id: "steals",          name: "Steals",                           points: 2 },
-  { id: "stealAndScore",   name: "Steal + Score",                    points: 4 },
-  { id: "turnoverFoul",    name: "Turnover / Offensivfoul",          points: -2 },
-  { id: "looseBall",       name: "Freiem Ball nachgehen",            points: 2 },
-  { id: "looseBallGet",    name: "Freiem Ball nachgehen + bekommen", points: 4 }
+  { id: "steals",          name: "Steal",                            points: 2,  group: "Ball erobert" },
+  { id: "stealAndScore",   name: "Steal + Score",                    points: 4,  group: "Ball erobert" },
+  { id: "interceptedPass", name: "Pass abgefangen",                  points: 1,  group: "Ball erobert" },
+  { id: "blocks",          name: "Block",                            points: 1,  group: "Korb verteidigt" },
+  { id: "rebounds",        name: "Rebound",                          points: 1,  group: "Korb verteidigt" },
+  { id: "looseBall",       name: "Freiem Ball nachgehen",            points: 2,  group: "Einsatz" },
+  { id: "looseBallGet",    name: "Freiem Ball nachgehen + bekommen", points: 4,  group: "Einsatz" },
+  { id: "assists",         name: "Assist",                           points: 2,  group: "Mitspieler bedient" },
+  { id: "turnoverFoul",    name: "Turnover / Offensivfoul",          points: -2, group: "Ballverlust" }
 ];
+// Namen früherer Versionen -> neue Namen (nur wenn unverändert übernommen)
+const OLD_NAMES = { assists: ["Assists"], rebounds: ["Rebounds", "Reb."], blocks: ["Blocks"], steals: ["Steals", "steals"], interceptedPass: ["Abgefangener Pass"],
+                    looseBall: ["freien ball nachgehen"], looseBallGet: ["Freien Ball nachgehen + bekommen"] };
+const BUILTIN_TPL_NAME = 'ETB-Standard';
 const DEFAULT_ROSTER = ["5","6","7","9","10","12","13","16"];
-const PRESETS = [
+const DEFAULT_ROSTER_TPLS = [
   { name: "Foto-Bogen (5–16)", players: ["5","6","7","9","10","12","13","16"] },
   { name: "Nummern 4 bis 15",  players: ["4","5","6","7","8","9","10","11","12","13","14","15"] }
 ];
+const GROUP_COLORS = ['#f59e0b', '#38bdf8', '#34d399', '#a78bfa', '#2dd4bf', '#f472b6', '#facc15'];
 const K = { cats: 'etb_categories_config', game: 'etb_game_v2', archive: 'etb_archive_v2', roster: 'etb_last_roster',
+            evTpl: 'etb_event_templates', rosterTpl: 'etb_roster_templates',
             oldGame: 'etb_basketball_def_app', oldArchive: 'etb_archived_games' };
 
-let categories, game, archive, lastRoster;
+let categories, game, archive, lastRoster, eventTemplates, rosterTemplates;
 let storageOk = true;
 let selectedPlayer = null;
 let configDraft = null;
@@ -420,6 +459,23 @@ function tally(g) {
 }
 function pointsOf(counts, cats) { return cats.reduce((s, k) => s + (counts[k.id] || 0) * k.points, 0); }
 function catById(cats, id) { return cats.find(c => c.id === id); }
+function fmtPointsText(n) { return `${n} ${Math.abs(n) === 1 ? 'Punkt' : 'Punkte'}`; }
+// Ereignisse nach Gruppe bündeln (Reihenfolge = erstes Auftreten), mit Farbe je Gruppe
+function groupsOf(cats) {
+  const map = new Map();
+  cats.forEach(c => { const g = (c.group || '').trim() || 'Weitere'; if (!map.has(g)) map.set(g, []); map.get(g).push(c); });
+  let n = 0;
+  return [...map].map(([name, items]) => ({ name, items, color: items.every(c => c.points < 0) ? '#fb7185' : GROUP_COLORS[n++ % GROUP_COLORS.length] }));
+}
+function migrateCategories(cats) {
+  const defById = Object.fromEntries(DEFAULT_CATEGORIES.map(c => [c.id, c]));
+  return cats.map(c => {
+    const d = defById[c.id], out = { ...c };
+    if (d && (OLD_NAMES[c.id] || []).includes(c.name)) out.name = d.name;
+    if (!out.group) out.group = d ? d.group : 'Weitere';
+    return out;
+  });
+}
 
 /* ===================== Start & Migration ===================== */
 function newGame(players) {
@@ -430,8 +486,10 @@ function init() {
   try { localStorage.setItem('__t', '1'); localStorage.removeItem('__t'); }
   catch (e) { storageOk = false; $('storageWarn').classList.remove('hidden'); }
 
-  categories = load(K.cats, null) || clone(DEFAULT_CATEGORIES);
+  categories = migrateCategories(load(K.cats, null) || clone(DEFAULT_CATEGORIES));
   lastRoster = load(K.roster, null) || DEFAULT_ROSTER;
+  eventTemplates = load(K.evTpl, null) || [];
+  rosterTemplates = load(K.rosterTpl, null) || clone(DEFAULT_ROSTER_TPLS);
   game = load(K.game, null);
   archive = load(K.archive, null);
 
@@ -460,6 +518,7 @@ function init() {
   document.querySelectorAll('.modal[data-backdrop]').forEach(m => m.addEventListener('click', e => { if (e.target === m) actions[m.dataset.backdrop](); }));
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && game.history.length) keepAwake(); });
   $('backupFile').addEventListener('change', onBackupFile);
+  $('settingsFile').addEventListener('change', onSettingsFile);
   if (!canShareFiles()) document.querySelectorAll('.share-only').forEach(b => b.classList.add('hidden'));
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});
@@ -469,6 +528,8 @@ function init() {
 }
 
 /* ===================== Darstellung ===================== */
+function parseRoster(text) { return [...new Set(String(text).split(/[\s,;]+/).map(s => s.trim().replace(/^#/, '')).filter(Boolean))]; }
+
 function render() {
   $('gameInfo').textContent = (game.opponent ? 'Gegner: ' + game.opponent : 'Kein Gegner eingetragen') + ' · ' + fmtDate(game.date);
   const counts = tally(game);
@@ -781,7 +842,26 @@ function renderArchive() {
   }).join('') : '<p class="empty">Noch keine beendeten Spiele. Spiele landen hier nach „Beenden“.</p>';
 }
 function backupBlob() {
-  return new Blob([JSON.stringify({ app: 'etb-dpc', version: 2, exported: new Date().toISOString(), categories, lastRoster, game, archive }, null, 1)], { type: 'application/json' });
+  return new Blob([JSON.stringify({ app: 'etb-dpc', version: 3, exported: new Date().toISOString(), categories, lastRoster, eventTemplates, rosterTemplates, game, archive }, null, 1)], { type: 'application/json' });
+}
+function settingsBlob() {
+  return new Blob([JSON.stringify({ app: 'etb-dpc-settings', version: 1, exported: new Date().toISOString(), categories, eventTemplates, rosterTemplates, lastRoster }, null, 1)], { type: 'application/json' });
+}
+async function onSettingsFile(e) {
+  const f = e.target.files[0]; e.target.value = '';
+  if (!f) return;
+  let d;
+  try { d = JSON.parse(await f.text()); if (!['etb-dpc-settings', 'etb-dpc'].includes(d.app) || !Array.isArray(d.categories)) throw 0; }
+  catch (err) { return toast('Diese Datei enthält keine gültigen Einstellungen.', 4000); }
+  const cats = migrateCategories(d.categories);
+  const lost = game.history.filter(h => !cats.some(c => c.id === h.cat)).length;
+  const msg = 'Ereignisse und Vorlagen auf diesem Gerät werden ersetzt. Spiele bleiben unverändert.' + (lost ? ` Achtung: ${lost} Aktion(en) im laufenden Spiel passen zu keinem Ereignis der Datei und zählen dann nicht mehr.` : '');
+  if (!await ask('Einstellungen laden?', msg, 'Laden')) return;
+  categories = cats; store(K.cats, categories);
+  if (Array.isArray(d.eventTemplates)) { eventTemplates = d.eventTemplates; store(K.evTpl, eventTemplates); }
+  if (Array.isArray(d.rosterTemplates)) { rosterTemplates = d.rosterTemplates; store(K.rosterTpl, rosterTemplates); }
+  if (Array.isArray(d.lastRoster)) { lastRoster = d.lastRoster; store(K.roster, lastRoster); }
+  render(); toast('Einstellungen geladen');
 }
 async function onBackupFile(e) {
   const f = e.target.files[0]; e.target.value = '';
@@ -790,25 +870,45 @@ async function onBackupFile(e) {
     const d = JSON.parse(await f.text());
     if (d.app !== 'etb-dpc' || !Array.isArray(d.categories) || !d.game || !Array.isArray(d.archive)) throw new Error('Format');
     if (!await ask('Backup laden?', 'Alle aktuellen Daten auf diesem Gerät werden durch das Backup ersetzt.', 'Ersetzen')) return;
-    categories = d.categories; game = d.game; archive = d.archive; lastRoster = d.lastRoster || lastRoster;
+    categories = migrateCategories(d.categories); game = d.game; archive = d.archive; lastRoster = d.lastRoster || lastRoster;
+    if (Array.isArray(d.eventTemplates)) eventTemplates = d.eventTemplates;
+    if (Array.isArray(d.rosterTemplates)) rosterTemplates = d.rosterTemplates;
     store(K.cats, categories); saveGame(); store(K.archive, archive); store(K.roster, lastRoster);
+    store(K.evTpl, eventTemplates); store(K.rosterTpl, rosterTemplates);
     render(); renderArchive(); toast('Backup geladen');
   } catch (err) { toast('Diese Datei ist kein gültiges Backup.', 4000); }
 }
 
 /* ===================== Ereignis-Konfiguration ===================== */
 function renderConfig() {
-  $('catList').innerHTML = configDraft.map((c, i) => `<div class="catrow">
+  const colorOf = {}; groupsOf(configDraft).forEach(g => colorOf[g.name] = g.color);
+  $('catList').innerHTML = configDraft.map((c, i) => `<div class="catrow" style="--gc:${colorOf[(c.group || '').trim() || 'Weitere']}">
     <div class="mv"><button data-click="catUp" data-i="${i}" ${i === 0 ? 'disabled' : ''}><svg class="i"><use href="#i-up"/></svg></button>
     <button data-click="catDown" data-i="${i}" ${i === configDraft.length - 1 ? 'disabled' : ''}><svg class="i"><use href="#i-down"/></svg></button></div>
-    <input class="name" type="text" value="${esc(c.name)}" data-i="${i}" data-k="name">
-    <input class="pts" type="number" inputmode="numeric" value="${c.points}" data-i="${i}" data-k="points">
-    <button data-click="catRemove" data-i="${i}" title="Entfernen"><svg class="i"><use href="#i-trash"/></svg></button></div>`).join('');
-  $('catList').querySelectorAll('input').forEach(inp => inp.addEventListener('input', () => {
-    const i = +inp.dataset.i;
-    if (inp.dataset.k === 'name') configDraft[i].name = inp.value;
-    else configDraft[i].points = parseInt(inp.value, 10) || 0;
-  }));
+    <input class="name" type="text" value="${esc(c.name)}" data-i="${i}" data-k="name" aria-label="Name">
+    <input class="pts" type="number" inputmode="numeric" value="${c.points}" data-i="${i}" data-k="points" aria-label="Punkte">
+    <button data-click="catRemove" data-i="${i}" title="Entfernen"><svg class="i"><use href="#i-trash"/></svg></button>
+    <input class="grpin" type="text" list="groupList" value="${esc(c.group || '')}" data-i="${i}" data-k="group" placeholder="Gruppe / Überschrift" aria-label="Gruppe"></div>`).join('');
+  $('groupList').innerHTML = [...new Set(configDraft.map(c => (c.group || '').trim()).filter(Boolean))].map(g => `<option value="${esc(g)}">`).join('');
+  $('catList').querySelectorAll('input').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const i = +inp.dataset.i, k = inp.dataset.k;
+      if (k === 'points') configDraft[i].points = parseInt(inp.value, 10) || 0;
+      else configDraft[i][k] = inp.value;
+    });
+    if (inp.dataset.k !== 'name') inp.addEventListener('change', renderConfig); // Farben aktualisieren
+  });
+  $('evTplChips').innerHTML = `<span class="tplchip"><button data-click="loadEvTpl" data-i="-1">${esc(BUILTIN_TPL_NAME)}</button></span>` +
+    eventTemplates.map((t, i) => `<span class="tplchip"><button data-click="loadEvTpl" data-i="${i}">${esc(t.name)}</button><button class="del" data-click="delEvTpl" data-i="${i}" title="Vorlage löschen"><svg class="i"><use href="#i-x"/></svg></button></span>`).join('');
+}
+function renderRosterTpls() {
+  $('presetChips').innerHTML = rosterTemplates.length ? rosterTemplates.map((t, i) => `<span class="tplchip"><button data-click="applyPreset" data-i="${i}">${esc(t.name)}</button><button class="del" data-click="delRosterTpl" data-i="${i}" title="Vorlage löschen"><svg class="i"><use href="#i-x"/></svg></button></span>`).join('')
+    : '<span class="hint" style="margin:0">Noch keine Vorlagen gespeichert.</span>';
+}
+function draftValid(list) {
+  if (list.some(c => !c.name.trim())) { toast('Jedes Ereignis braucht einen Namen.'); return false; }
+  list.forEach(c => { c.name = c.name.trim(); c.group = (c.group || '').trim(); });
+  return true;
 }
 
 /* ===================== Aktionen (Buttons) ===================== */
@@ -817,8 +917,9 @@ const actions = {
     selectedPlayer = el.dataset.p;
     $('actionBadge').textContent = '#' + selectedPlayer;
     const st = tally(game)[selectedPlayer] || {};
-    $('actionPlayerInfo').textContent = `Bisher ${pointsOf(st, categories)} Punkte`;
-    $('actionGrid').innerHTML = categories.map(c => `<button class="act ${c.points < 0 ? 'neg' : ''}" data-click="record" data-cat="${esc(c.id)}">${esc(c.name)}</button>`).join('');
+    $('actionPlayerInfo').textContent = 'Bisher ' + fmtPointsText(pointsOf(st, categories));
+    $('actionGrid').innerHTML = groupsOf(categories).map(g => `<div class="grp" style="--gc:${g.color}"><h4>${esc(g.name)}</h4><div class="actgrid">` +
+      g.items.map((c, i) => `<button class="act ${g.items.length % 2 && i === g.items.length - 1 ? 'wide' : ''}" data-click="record" data-cat="${esc(c.id)}">${esc(c.name)}</button>`).join('') + '</div></div>').join('');
     showM('actionModal');
     keepAwake();
   },
@@ -859,13 +960,28 @@ const actions = {
     $('setupOpponent').value = game.opponent || '';
     $('setupDate').value = game.date || todayISO();
     $('setupRoster').value = game.players.join(', ');
-    $('presetChips').innerHTML = PRESETS.map((p, i) => `<button class="btn sm" data-click="applyPreset" data-i="${i}">${esc(p.name)}</button>`).join('');
+    $('rosterTplName').value = '';
+    renderRosterTpls();
     showM('setupModal');
   },
   closeSetup() { hideM('setupModal'); },
-  applyPreset(el) { $('setupRoster').value = PRESETS[+el.dataset.i].players.join(', '); },
+  applyPreset(el) { const t = rosterTemplates[+el.dataset.i]; if (t) { $('setupRoster').value = t.players.join(', '); toast('Vorlage „' + t.name + '“ eingesetzt'); } },
+  async saveRosterTpl() {
+    const name = $('rosterTplName').value.trim();
+    const players = parseRoster($('setupRoster').value);
+    if (!name) return toast('Bitte einen Namen für die Vorlage eingeben.');
+    if (!players.length) return toast('Bitte zuerst Trikotnummern eintragen.');
+    const i = rosterTemplates.findIndex(t => t.name.toLowerCase() === name.toLowerCase());
+    if (i >= 0) { if (!await ask('Vorlage überschreiben?', `„${rosterTemplates[i].name}“ existiert bereits.`, 'Überschreiben', false)) return; rosterTemplates[i] = { name, players }; }
+    else rosterTemplates.push({ name, players });
+    store(K.rosterTpl, rosterTemplates); $('rosterTplName').value = ''; renderRosterTpls(); toast('Kader-Vorlage gespeichert');
+  },
+  async delRosterTpl(el) {
+    const t = rosterTemplates[+el.dataset.i]; if (!t) return;
+    if (await ask('Vorlage löschen?', `Kader-Vorlage „${t.name}“ wird gelöscht.`, 'Löschen')) { rosterTemplates.splice(+el.dataset.i, 1); store(K.rosterTpl, rosterTemplates); renderRosterTpls(); }
+  },
   saveSetup() {
-    const players = [...new Set($('setupRoster').value.split(/[\s,;]+/).map(s => s.trim().replace(/^#/, '')).filter(Boolean))];
+    const players = parseRoster($('setupRoster').value);
     if (!players.length) { toast('Bitte mindestens eine Trikotnummer eintragen.'); return; }
     game.opponent = $('setupOpponent').value.trim();
     game.date = $('setupDate').value || todayISO();
@@ -874,16 +990,33 @@ const actions = {
     saveGame(); render(); hideM('setupModal');
   },
 
-  openConfig() { configDraft = clone(categories); renderConfig(); showM('configModal'); },
+  openConfig() { configDraft = clone(categories); $('evTplName').value = ''; renderConfig(); showM('configModal'); },
+  loadEvTpl(el) {
+    const i = +el.dataset.i, t = i < 0 ? { name: BUILTIN_TPL_NAME, categories: DEFAULT_CATEGORIES } : eventTemplates[i]; if (!t) return;
+    configDraft = clone(t.categories); $('evTplName').value = i < 0 ? '' : t.name; renderConfig();
+    toast('„' + t.name + '“ geladen – mit „Speichern“ übernehmen');
+  },
+  async saveEvTpl() {
+    const name = $('evTplName').value.trim();
+    if (!name) return toast('Bitte einen Namen für die Vorlage eingeben.');
+    if (name.toLowerCase() === BUILTIN_TPL_NAME.toLowerCase()) return toast('Dieser Name ist für die eingebaute Vorlage reserviert.');
+    if (!draftValid(configDraft)) return;
+    const i = eventTemplates.findIndex(t => t.name.toLowerCase() === name.toLowerCase());
+    if (i >= 0) { if (!await ask('Vorlage überschreiben?', `„${eventTemplates[i].name}“ existiert bereits.`, 'Überschreiben', false)) return; eventTemplates[i] = { name, categories: clone(configDraft) }; }
+    else eventTemplates.push({ name, categories: clone(configDraft) });
+    store(K.evTpl, eventTemplates); renderConfig(); toast('Ereignis-Vorlage „' + name + '“ gespeichert');
+  },
+  async delEvTpl(el) {
+    const t = eventTemplates[+el.dataset.i]; if (!t) return;
+    if (await ask('Vorlage löschen?', `Ereignis-Vorlage „${t.name}“ wird gelöscht. Die aktuelle Ereignisliste bleibt unverändert.`, 'Löschen')) { eventTemplates.splice(+el.dataset.i, 1); store(K.evTpl, eventTemplates); renderConfig(); }
+  },
   closeConfig() { configDraft = null; hideM('configModal'); },
   catUp(el) { const i = +el.dataset.i; [configDraft[i - 1], configDraft[i]] = [configDraft[i], configDraft[i - 1]]; renderConfig(); },
   catDown(el) { const i = +el.dataset.i; [configDraft[i + 1], configDraft[i]] = [configDraft[i], configDraft[i + 1]]; renderConfig(); },
   catRemove(el) { if (configDraft.length <= 1) return toast('Mindestens ein Ereignis wird benötigt.'); configDraft.splice(+el.dataset.i, 1); renderConfig(); },
-  addCategory() { configDraft.push({ id: 'cat_' + uid(), name: 'Neues Ereignis', points: 1 }); renderConfig(); const inputs = $('catList').querySelectorAll('input.name'); inputs[inputs.length - 1].focus(); },
-  async resetCategories() { if (await ask('Standard wiederherstellen?', 'Die Ereignisliste wird auf die Standardwerte zurückgesetzt (erst nach „Speichern“ wirksam).', 'Zurücksetzen')) { configDraft = clone(DEFAULT_CATEGORIES); renderConfig(); } },
+  addCategory() { const last = configDraft[configDraft.length - 1]; configDraft.push({ id: 'cat_' + uid(), name: 'Neues Ereignis', points: 1, group: last ? last.group : '' }); renderConfig(); const inputs = $('catList').querySelectorAll('input.name'); inputs[inputs.length - 1].focus(); },
   async saveConfig() {
-    if (configDraft.some(c => !c.name.trim())) return toast('Jedes Ereignis braucht einen Namen.');
-    configDraft.forEach(c => c.name = c.name.trim());
+    if (!draftValid(configDraft)) return;
     const removed = categories.filter(c => !configDraft.some(d => d.id === c.id));
     const used = game.history.filter(h => removed.some(r => r.id === h.cat)).length;
     if (used && !await ask('Ereignis wird verwendet', `${used} erfasste Aktion(en) im laufenden Spiel gehören zu entfernten Ereignissen und zählen dann nicht mehr.`, 'Trotzdem speichern')) return;
@@ -921,7 +1054,10 @@ const actions = {
   },
   backupSave() { downloadFile(backupBlob(), `ETB_DPC_Backup_${todayISO()}.json`); },
   backupShare() { shareFile(backupBlob(), `ETB_DPC_Backup_${todayISO()}.json`); },
-  backupLoad() { $('backupFile').click(); }
+  backupLoad() { $('backupFile').click(); },
+  settingsSave() { downloadFile(settingsBlob(), `ETB_DPC_Einstellungen_${todayISO()}.json`); },
+  settingsShare() { shareFile(settingsBlob(), `ETB_DPC_Einstellungen_${todayISO()}.json`); },
+  settingsLoad() { $('settingsFile').click(); }
 };
 
 function onClick(e) {

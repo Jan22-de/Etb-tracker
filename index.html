@@ -139,7 +139,7 @@ table.stats tr.gone td:first-child{color:var(--muted);font-style:italic}
 #banner .txt small{display:block;font-size:10px;color:#6ee7b7;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
 #banner .txt b{font-size:14px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #banner .bar{position:absolute;left:0;bottom:0;height:3px;background:#34d399;width:100%}
-#banner .bar.run{animation:shrink 7s linear forwards}
+#banner .bar.anim{animation:shrink 7s linear forwards}
 #banner .undo{background:rgba(0,0,0,.25);border:1px solid rgba(110,231,183,.4);color:#d1fae5;border-radius:9px;padding:8px 10px;font-size:12px;font-weight:700;display:flex;gap:5px;align-items:center}
 @keyframes shrink{from{width:100%}to{width:0}}
 
@@ -709,7 +709,7 @@ function showBanner(entry, cat) {
   bannerEntryId = entry.id;
   const nm = nameOf(game, entry.player);
   $('bannerText').textContent = `#${entry.player}${nm ? ' ' + nm : ''} – ${cat.name}`;
-  const bar = $('bannerBar'); bar.classList.remove('run'); void bar.offsetWidth; bar.classList.add('run');
+  const bar = $('bannerBar'); bar.classList.remove('anim'); void bar.offsetWidth; bar.classList.add('anim');
   showM('banner');
   clearTimeout(bannerTimer); bannerTimer = setTimeout(hideBanner, 7000);
 }

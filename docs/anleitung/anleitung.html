@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>ETB Defensive Point Club – Anleitung</title>
+<style>
+@page { size: A4; margin: 16mm 15mm 16mm 15mm; }
+* { box-sizing: border-box; }
+body { font-family: "Liberation Sans", Arial, sans-serif; font-size: 10.5pt; line-height: 1.45; color: #1e293b; margin: 0; }
+a { color: #b45309; }
+h1 { font-size: 22pt; margin: 0 0 2mm; color: #0f172a; }
+h2 { font-size: 14.5pt; margin: 0 0 3mm; color: #0f172a; display: flex; align-items: center; gap: 3mm; }
+h2 .no { background: #f59e0b; color: #0f172a; border-radius: 2mm; padding: 0.6mm 2.6mm; font-size: 12pt; }
+h3 { font-size: 11.5pt; margin: 4mm 0 1.5mm; color: #0f172a; }
+p { margin: 0 0 2mm; }
+.sub { color: #64748b; font-size: 10pt; margin-bottom: 5mm; }
+.hero { display: flex; gap: 6mm; align-items: center; border: 0.6mm solid #f59e0b; background: #fffbeb; border-radius: 3mm; padding: 5mm 6mm; margin-bottom: 6mm; }
+.hero .txt { flex: 1; }
+.hero .lbl { font-size: 9pt; text-transform: uppercase; letter-spacing: .08em; color: #92400e; font-weight: 700; }
+.hero .url { font-size: 15pt; font-weight: 700; margin: 1mm 0 2mm; }
+.hero img { width: 32mm; height: 32mm; }
+.overview { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; margin-bottom: 4mm; }
+.ov { border: 0.3mm solid #cbd5e1; border-radius: 2.5mm; padding: 3mm 4mm; }
+.ov b { display: block; color: #0f172a; margin-bottom: .5mm; }
+.ov .tag { font-size: 8.5pt; font-weight: 700; color: #92400e; text-transform: uppercase; letter-spacing: .06em; }
+.section { page-break-before: always; }
+.row { display: flex; gap: 5mm; align-items: flex-start; margin-bottom: 4mm; break-inside: avoid; }
+.row .text { flex: 1; }
+.shot { width: 46mm; border: 0.4mm solid #334155; border-radius: 3mm; flex-shrink: 0; }
+.shot.sm { width: 36mm; }
+.cap { font-size: 8.5pt; color: #64748b; text-align: center; margin-top: 1mm; }
+figure { margin: 0; flex-shrink: 0; }
+ol.steps { counter-reset: s; list-style: none; padding: 0; margin: 0 0 2mm; }
+ol.steps > li { counter-increment: s; position: relative; padding-left: 9mm; margin-bottom: 2mm; }
+ol.steps > li::before { content: counter(s); position: absolute; left: 0; top: -0.2mm; width: 6mm; height: 6mm; border-radius: 50%; background: #0f172a; color: #fff; font-weight: 700; font-size: 9pt; display: flex; align-items: center; justify-content: center; }
+.btn { display: inline-block; background: #e2e8f0; border: 0.3mm solid #94a3b8; border-radius: 1.5mm; padding: 0 1.6mm; font-weight: 700; font-size: 9.5pt; white-space: nowrap; }
+.btn.o { background: #f59e0b; border-color: #d97706; }
+.note { border-left: 1.2mm solid #0ea5e9; background: #f0f9ff; padding: 2.5mm 4mm; border-radius: 0 2mm 2mm 0; margin: 2mm 0 3mm; font-size: 10pt; break-inside: avoid; }
+.warn { border-left-color: #e11d48; background: #fff1f2; }
+.tip { border-left-color: #10b981; background: #ecfdf5; }
+table.ev { border-collapse: collapse; width: 100%; font-size: 9.5pt; margin: 1mm 0 3mm; }
+table.ev th, table.ev td { border: 0.3mm solid #cbd5e1; padding: 1.2mm 2mm; text-align: left; }
+table.ev th { background: #f1f5f9; }
+table.ev td.n { text-align: center; width: 16mm; }
+.dot { display: inline-block; width: 2.6mm; height: 2.6mm; border-radius: 50%; margin-right: 1.5mm; vertical-align: -0.2mm; }
+.checklist { border: 0.4mm solid #0f172a; border-radius: 3mm; padding: 4mm 5mm; break-inside: avoid; }
+.checklist h3 { margin-top: 0; }
+.checklist li { margin-bottom: 1mm; }
+.foot { margin-top: 6mm; font-size: 8.5pt; color: #94a3b8; }
+.keep{break-inside:avoid;page-break-inside:avoid}
+</style>
+</head>
+<body>
+<h1>ETB Defensive Point Club</h1>
+<div class="sub">Anleitung zur Statistik-App · Stand 13.11.2026</div>
+
+<div class="hero">
+  <div class="txt">
+    <div class="lbl">Hier geht’s zur App – antippen oder QR-Code scannen</div>
+    <div class="url"><a href="https://jan22-de.github.io/Etb-tracker/">jan22-de.github.io/Etb-tracker</a></div>
+    <p style="margin:0">Die App läuft im Browser des Handys, braucht keinen App-Store und funktioniert nach dem ersten Öffnen auch <b>ohne Internet</b> in der Halle. Alle Daten bleiben auf deinem Handy.</p>
+  </div>
+  <img src="img/qr.svg" alt="QR-Code zur App">
+</div>
+
+<h3>So ist die Anleitung aufgebaut</h3>
+<div class="overview">
+  <div class="ov"><span class="tag">Einmalig</span><b>1 · App installieren</b>Auf den Startbildschirm legen.</div>
+  <div class="ov"><span class="tag">Überblick</span><b>2 · Das Hauptmenü</b>Hier startet die App immer.</div>
+  <div class="ov"><span class="tag">Einmalig</span><b>3 · Grundeinstellungen</b>Ereignisse &amp; Punkte, Mannschaft mit Nummern und Namen.</div>
+  <div class="ov"><span class="tag">Jedes Spiel</span><b>4 · Neues Spiel anlegen</b>Gegner, Datum, aufgestellte Spieler.</div>
+  <div class="ov"><span class="tag">Jedes Spiel</span><b>5 · Punkte vergeben</b>Spieler antippen, Aktion wählen, fertig.</div>
+  <div class="ov"><span class="tag">Jedes Spiel</span><b>6 · Spiel beenden</b>Spiel ins Archiv, zurück ins Hauptmenü.</div>
+  <div class="ov"><span class="tag">Jedes Spiel</span><b>7 · PDF an den Coach</b>Per WhatsApp verschicken.</div>
+  <div class="ov"><span class="tag">Regelmäßig</span><b>8 · Sicherung</b>Damit keine Daten verloren gehen.</div>
+</div>
+
+<!-- ============ 1 ============ -->
+<h2 style="margin-top:5mm"><span class="no">1</span>App installieren <span style="font-size:10pt;color:#64748b;font-weight:400">· einmalig</span></h2>
+<p><b>Empfohlen: Google Chrome</b> (Android) bzw. <b>Safari</b> (iPhone).</p>
+<ol class="steps">
+  <li>Den Link oben antippen bzw. den QR-Code mit der Handykamera scannen.</li>
+  <li><b>Android/Chrome:</b> Menü <span class="btn">⋮</span> → <span class="btn">App installieren</span> oder <span class="btn">Zum Startbildschirm hinzufügen</span>.<br>
+      <b>iPhone/Safari:</b> Teilen-Symbol → <span class="btn">Zum Home-Bildschirm</span>.</li>
+  <li>Die App ab jetzt immer über das Symbol <b>„ETB DPC“</b> auf dem Startbildschirm öffnen.</li>
+</ol>
+<div class="note warn"><b>Nicht mit Firefox (Android) verwenden.</b> Dort öffnet sich beim Speichern einer PDF nur eine leere Seite „about:blank“ – ein bekannter Fehler von Firefox. Außerdem gilt: Die Daten liegen <b>pro Browser</b>. Was in Chrome erfasst wurde, sieht ein anderer Browser nicht.</div>
+
+<!-- ============ 2 ============ -->
+<div class="section"></div>
+<h2><span class="no">2</span>Das Hauptmenü <span style="font-size:10pt;color:#64748b;font-weight:400">· hier startet die App immer</span></h2>
+<div class="row">
+  <div class="text">
+    <h3>Ohne laufendes Spiel</h3>
+    <ul>
+      <li><span class="btn o">Neues Spiel</span> – der große Knopf: Gegner und Kader wählen, dann geht’s los (Kapitel 4).</li>
+      <li><b>Archiv</b> – alle beendeten Spiele, jederzeit wieder als PDF/Excel exportierbar.</li>
+      <li><b>Mannschaft</b> – Trikotnummern, Namen und Kader-Vorlagen.</li>
+      <li><b>Ereignisse</b> – welche Aktion wie viele Punkte bringt.</li>
+      <li><b>Sicherung</b> – Daten sichern und wiederherstellen.</li>
+    </ul>
+    <p>Darunter erscheinen das <b>letzte Spiel</b> mit Teampunkten und – falls nötig – die <b>Sicherungs-Erinnerung</b> (Kapitel 8).</p>
+    <h3>Während ein Spiel läuft</h3>
+    <p>Oben steht eine <b>grüne Karte „Spiel läuft“</b> mit Gegner, Startzeit, Anzahl Aktionen, Teampunkten und bestem Spieler. Mit <span class="btn" style="background:#10b981;border-color:#059669">Weiter erfassen</span> bist du sofort zurück im Spiel – praktisch, wenn die App versehentlich geschlossen wurde.</p>
+  </div>
+  <figure><img class="shot sm" src="img/00_home_leer.png"><div class="cap">Ohne laufendes Spiel</div></figure>
+  <figure><img class="shot sm" src="img/10_home_laeuft.png"><div class="cap">Mit laufendem Spiel</div></figure>
+</div>
+
+<!-- ============ 3 ============ -->
+<h2 style="margin-top:4mm"><span class="no">3</span>Grundeinstellungen <span style="font-size:10pt;color:#64748b;font-weight:400">· einmalig, danach nur bei Änderungen</span></h2>
+<p>Erst die Regeln (welche Aktion zählt wie viel), dann die Mannschaft (Nummern und Namen). Beides gilt für alle folgenden Spiele.</p>
+
+<div class="row">
+  <div class="text">
+    <h3>3.1 Ereignisse &amp; Punkte prüfen</h3>
+    <ol class="steps">
+      <li>Im Hauptmenü auf <b>Ereignisse</b> tippen.</li>
+      <li>Je Ereignis siehst du <b>Name</b>, <b>Punkte</b> und darunter die <b>Gruppe</b> – das ist die farbige Überschrift im Erfassungsmenü.</li>
+      <li>Bei Bedarf ändern: Pfeile ↑↓ = Reihenfolge, Papierkorb = entfernen, <span class="btn">+ Ereignis hinzufügen</span> = neu.</li>
+      <li><span class="btn o">Speichern</span> tippen.</li>
+    </ol>
+    <div class="note tip"><b>Eigene Vorlage:</b> Oben einen Namen eingeben (z. B. „Saison 26/27“) und <span class="btn">Als Vorlage speichern</span>. Später per Antippen laden; „ETB-Standard“ stellt die Grundwerte wieder her.</div>
+  </div>
+  <figure><img class="shot" src="img/01_ereignisse.png"><div class="cap">Ereignisse &amp; Punkte</div></figure>
+</div>
+
+<div class="keep"><p><b>Voreinstellung „ETB-Standard“:</b></p>
+<table class="ev">
+  <tr><th>Gruppe (Überschrift)</th><th>Ereignis</th><th class="n">Punkte</th></tr>
+  <tr><td><span class="dot" style="background:#f59e0b"></span>Ball erobert</td><td>Steal · Steal + Score · Pass abgefangen</td><td class="n">2 · 4 · 1</td></tr>
+  <tr><td><span class="dot" style="background:#38bdf8"></span>Korb verteidigt</td><td>Block · Rebound</td><td class="n">1 · 1</td></tr>
+  <tr><td><span class="dot" style="background:#34d399"></span>Einsatz</td><td>Freiem Ball nachgehen · … + bekommen</td><td class="n">2 · 4</td></tr>
+  <tr><td><span class="dot" style="background:#a78bfa"></span>Mitspieler bedient</td><td>Assist</td><td class="n">2</td></tr>
+  <tr><td><span class="dot" style="background:#fb7185"></span>Ballverlust</td><td>Turnover / Offensivfoul</td><td class="n">−2</td></tr>
+</table></div>
+
+<div class="row">
+  <div class="text">
+    <h3>3.2 Mannschaft: Nummern und Namen</h3>
+    <ol class="steps">
+      <li>Im Hauptmenü auf <b>Mannschaft</b> tippen.</li>
+      <li>Bei <b>Trikotnummern</b> alle Nummern eintragen, getrennt durch Komma oder Leerzeichen, z. B. <i>5, 6, 7, 9, 10</i>.</li>
+      <li>Darunter erscheint zu jeder Nummer ein Feld <b>Namen</b>. Namen eintragen (freiwillig). Sie stehen später klein unter der Nummer – in der App und im PDF.</li>
+    </ol>
+    <h3>3.3 Als Kader-Vorlage speichern</h3>
+    <ol class="steps">
+      <li>Im selben Fenster unten bei <b>Kader-Vorlagen</b> einen Namen eintragen, z. B. „U12“.</li>
+      <li><span class="btn">Nummern speichern</span> tippen. Die Vorlage enthält Nummern <b>und</b> Namen.</li>
+      <li>Mit <span class="btn o">Speichern</span> das Fenster schließen.</li>
+    </ol>
+    <p>Eine Vorlage setzt du später mit einem Tipp ein, mit ✕ löschst du sie – praktisch bei mehreren Mannschaften oder wechselnden Aufstellungen.</p>
+  </div>
+  <figure><img class="shot sm" src="img/02a_mannschaft.png"><div class="cap">Nummern und Namen</div></figure>
+  <figure><img class="shot sm" src="img/02_vorlage.png"><div class="cap">Kader-Vorlage</div></figure>
+</div>
+<div class="note"><b>3.4 Einrichtung weitergeben:</b> Hauptmenü → <b>Sicherung</b> → „Nur Einstellungen sichern“ → <span class="btn">Teilen</span>. Die Datei enthält Ereignisse, Vorlagen und Namen, aber keine Spiele. Andere Helfer laden sie bei sich mit <span class="btn">Laden</span>.</div>
+
+<!-- ============ 4 ============ -->
+<div class="section"></div>
+<h2><span class="no">4</span>Neues Spiel anlegen <span style="font-size:10pt;color:#64748b;font-weight:400">· vor jedem Spiel</span></h2>
+<div class="row">
+  <div class="text">
+    <ol class="steps">
+      <li>Im Hauptmenü auf <span class="btn o">Neues Spiel</span> tippen.</li>
+      <li><b>Gegner / Spiel</b> eintragen, <b>Datum</b> prüfen (ist automatisch heute).</li>
+      <li>Nummern und Namen der Mannschaft sind schon eingetragen. <b>Nicht anwesende Nummern löschen</b> – oder eine Kader-Vorlage antippen.</li>
+      <li><span class="btn o">Spiel starten</span> tippen. Jetzt erscheint für jede Nummer eine Kachel.</li>
+    </ol>
+    <div class="note">Läuft noch ein Spiel, fragt die App vorher, ob es beendet und ins Archiv verschoben werden soll.</div>
+    <h3>Die Leiste unten während des Spiels</h3>
+    <p><span class="btn">Menü</span> zurück ins Hauptmenü (das Spiel läuft weiter) · <span class="btn">Kader</span> Gegner, Datum, Spieler ändern · <span class="btn">Ereignisse</span> Punkte anpassen · <span class="btn">Export</span> PDF/Excel · <span class="btn" style="color:#be123c">Spielende</span> Spiel abschließen.</p>
+  </div>
+  <figure><img class="shot" src="img/03_neues_spiel.png"><div class="cap">Neues Spiel</div></figure>
+</div>
+
+<!-- ============ 5 ============ -->
+<div class="keep"><h2 style="margin-top:4mm"><span class="no">5</span>Punkte vergeben <span style="font-size:10pt;color:#64748b;font-weight:400">· während des Spiels</span></h2>
+<div class="row">
+  <div class="text">
+    <h3>Jede Aktion in zwei Tipps</h3>
+    <ol class="steps">
+      <li><b>Kachel des Spielers antippen</b> – große Nummer, darunter der Name, oben rechts die bisherigen Punkte.</li>
+      <li>Von unten öffnet sich das <b>Aktionsmenü</b>, geordnet nach farbigen Gruppen. <b>Aktion antippen</b> – fertig.</li>
+    </ol>
+    <p>Falschen Spieler erwischt? Neben das Menü tippen oder oben ✕ – es wird nichts gezählt.</p>
+    <p>Darunter siehst du laufend die <b>Live-Statistik</b> (alle Spieler × Ereignisse, Teamsumme) und den <b>Verlauf</b> mit Uhrzeit.</p>
+  </div>
+  <figure><img class="shot sm" src="img/03_haupt.png"><div class="cap">① Spieler antippen</div></figure>
+  <figure><img class="shot sm" src="img/04_menue.png"><div class="cap">② Aktion wählen</div></figure>
+</div>
+</div>
+
+<div class="row">
+  <div class="text">
+    <h3>Fehler korrigieren – drei Wege</h3>
+    <ol class="steps">
+      <li><b>Sofort:</b> Nach jeder Erfassung erscheint unten <b>7 Sekunden</b> eine grüne Leiste „Erfasst: #9 Mia – Steal + Score“. Ein dünner Balken zeigt die verbleibende Zeit. Dort <span class="btn">Rückgängig</span> tippen.</li>
+      <li><b>Kurz danach:</b> Der rote Knopf oben rechts zeigt immer die <b>letzte Erfassung</b> (z. B. „#9 Steal + Score“ mit Pfeil-Symbol). Antippen → Sicherheitsabfrage → <span class="btn" style="background:#e11d48;color:#fff;border-color:#be123c">Löschen</span>.</li>
+      <li><b>Älterer Eintrag:</b> Im <b>Verlauf</b> unten beim betreffenden Eintrag auf ✕ tippen.</li>
+    </ol>
+    <div class="note tip">Der Bildschirm bleibt während des Spiels an (bei Chrome). Alles wird sofort gespeichert – auch wenn das Handy gesperrt oder die App geschlossen wird.</div>
+  </div>
+  <figure><img class="shot sm" src="img/05_banner.png"><div class="cap">Grüne Leiste mit „Rückgängig“</div></figure>
+  <figure><img class="shot sm" src="img/06_undo.png"><div class="cap">Letzte Erfassung löschen</div></figure>
+</div>
+
+<!-- ============ 6 ============ -->
+<div class="keep"><h2 style="margin-top:4mm"><span class="no">6</span>Spiel beenden <span style="font-size:10pt;color:#64748b;font-weight:400">· nach dem Abpfiff</span></h2>
+<div class="row">
+  <div class="text">
+    <div class="note"><b>Tipp:</b> Das PDF für den Coach (Kapitel 7) kannst du <b>vor</b> oder <b>nach</b> dem Beenden verschicken. Nach dem Beenden findest du das Spiel im Archiv.</div>
+    <ol class="steps">
+      <li>Unten auf <span class="btn" style="color:#be123c">Spielende</span> (Pfeife) tippen.</li>
+      <li>Mit <span class="btn o">Beenden</span> bestätigen.</li>
+      <li>Das Spiel liegt jetzt im <b>Archiv</b>, und du bist zurück im <b>Hauptmenü</b>. Dort steht es als „Letztes Spiel“ mit Teampunkten.</li>
+    </ol>
+    <h3>Das Archiv</h3>
+    <p>Hauptmenü → <b>Archiv</b>: alle beendeten Spiele mit Datum, Anzahl der Aktionen und Teampunkten. Jedes Spiel kannst du dort jederzeit erneut <span class="btn">Exportieren</span> oder <span class="btn">Löschen</span>.</p>
+  </div>
+  <figure><img class="shot sm" src="img/08_spielende.png"><div class="cap">Spiel beenden</div></figure>
+  <figure><img class="shot sm" src="img/11_home_nach.png"><div class="cap">Zurück im Hauptmenü</div></figure>
+</div>
+</div>
+
+<!-- ============ 7 ============ -->
+<div class="keep"><h2 style="margin-top:4mm"><span class="no">7</span>PDF per WhatsApp an den Coach</h2>
+<div class="row">
+  <div class="text">
+    <h3>Laufendes Spiel</h3>
+    <ol class="steps">
+      <li>Unten auf <span class="btn">Export</span> tippen.</li>
+      <li>In der Zeile <b>PDF</b> auf <span class="btn">Teilen</span> tippen.</li>
+      <li>Im Teilen-Menü des Handys <b>WhatsApp</b> wählen.</li>
+      <li>Den <b>Chat des Coaches</b> (oder die Trainergruppe) auswählen und <b>senden</b>.</li>
+    </ol>
+    <h3>Bereits beendetes Spiel</h3>
+    <p>Hauptmenü → <b>Archiv</b> → beim Spiel <span class="btn">Export</span> → dann wie oben ab Schritt 2.</p>
+    <h3>Falls kein „Teilen“-Knopf da ist</h3>
+    <ol class="steps">
+      <li>Bei <b>PDF</b> auf <span class="btn">Speichern</span> tippen – die Datei landet im Ordner <b>Downloads</b>.</li>
+      <li>In WhatsApp den Chat öffnen → Büroklammer-Symbol → <b>Dokument</b> → die Datei <i>ETB_DPC_Datum_Gegner.pdf</i> wählen → senden.</li>
+    </ol>
+    <p>Das PDF ist ein Bogen <b>DIN A4 quer</b> mit allen Spielern, Namen, Ereignissen, Punkten und Teamsumme. Für eigene Auswertungen gibt es dieselben Daten als <b>Excel</b>-Datei (zusätzlich mit dem Verlauf aller Aktionen).</p>
+  </div>
+  <figure><img class="shot" src="img/07_export.png"><div class="cap">Export: PDF → Teilen → WhatsApp</div></figure>
+</div>
+</div>
+
+<!-- ============ 8 ============ -->
+<div class="keep"><h2 style="margin-top:4mm"><span class="no">8</span>Sicherung <span style="font-size:10pt;color:#64748b;font-weight:400">· nach jedem Spieltag</span></h2>
+<div class="row">
+  <div class="text">
+    <p>Alle Daten liegen <b>nur auf diesem Handy</b>. Geht es verloren oder wird der Browser-Speicher gelöscht, sind sie weg. Deshalb erinnert dich das Hauptmenü, sobald ein beendetes Spiel <b>noch nicht gesichert</b> ist („1 Spiel noch nicht gesichert“ – <span class="btn o">Jetzt sichern</span>).</p>
+    <ol class="steps">
+      <li>Hauptmenü → <b>Sicherung</b> (oder <span class="btn o">Jetzt sichern</span>).</li>
+      <li>Bei <b>Komplette Sicherung</b> auf <span class="btn">Backup teilen</span> tippen und z. B. an dich selbst per Mail/WhatsApp oder in Google Drive senden – oder <span class="btn">Backup speichern</span> (landet in Downloads).</li>
+      <li>Die Erinnerung im Hauptmenü verschwindet.</li>
+    </ol>
+    <p><b>Wiederherstellen</b> (z. B. auf einem neuen Handy): App öffnen → <b>Sicherung</b> → <span class="btn">Backup laden</span> → Datei auswählen.</p>
+    <div class="note warn">Die App merkt sich nur, dass du auf Speichern bzw. Teilen getippt hast – ob die Datei wirklich angekommen ist, kann sie nicht prüfen. Am besten einmal nachsehen.</div>
+  </div>
+  <figure><img class="shot" src="img/12_sicherung.png"><div class="cap">Sicherung</div></figure>
+</div>
+</div>
+
+<div class="checklist">
+  <h3>Spieltag auf einen Blick</h3>
+  <ol>
+    <li><b>Vorher:</b> Hauptmenü → <span class="btn o">Neues Spiel</span> → Gegner, fehlende Spieler löschen → <span class="btn o">Spiel starten</span></li>
+    <li><b>Während:</b> Spieler-Kachel → Aktion. Fehler? Grüne Leiste → <span class="btn">Rückgängig</span></li>
+    <li><b>Nach Abpfiff:</b> <span class="btn">Export</span> → PDF → <span class="btn">Teilen</span> → WhatsApp → Coach</li>
+    <li><span class="btn" style="color:#be123c">Spielende</span> → <span class="btn o">Beenden</span></li>
+    <li><b>Sicherung:</b> Hauptmenü → <span class="btn o">Jetzt sichern</span> → <span class="btn">Backup teilen</span></li>
+  </ol>
+</div>
+
+<h3 style="margin-top:6mm">Gut zu wissen</h3>
+<ul>
+  <li><b>Zwei Helfer, zwei Handys:</b> Jedes Handy hat seine eigenen Daten. Am besten erfasst pro Spiel nur eine Person.</li>
+  <li><b>Updates:</b> Neue Versionen kommen automatisch – sichtbar meist beim <b>zweiten</b> Öffnen mit Internet. Deine Daten bleiben dabei erhalten.</li>
+  <li><b>Datenschutz:</b> Sicherungsdateien und Exporte enthalten die Spielernamen. Nur an Personen weitergeben, die sie bekommen dürfen.</li>
+</ul>
+
+<div class="foot">ETB Defensive Point Club – Anleitung zur Statistik-App · <a href="https://jan22-de.github.io/Etb-tracker/">jan22-de.github.io/Etb-tracker</a></div>
+</body>
+</html>

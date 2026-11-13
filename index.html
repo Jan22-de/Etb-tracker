@@ -37,6 +37,46 @@ header{position:sticky;top:0;z-index:30;background:var(--panel);border-bottom:1p
 #bottomNav button:active{background:var(--panel2)}
 #bottomNav button.end svg.i,#bottomNav button.end{color:#fb7185}
 .title{cursor:pointer}
+/* ===== Hauptmenü ===== */
+#home{min-height:100vh;display:flex;flex-direction:column;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+body.home header,body.home main,body.home #bottomNav,body.home #banner{display:none!important}
+body:not(.home) #home{display:none}
+body.home{padding-bottom:0}
+.hhero{padding:calc(34px + env(safe-area-inset-top)) 22px 24px;background:radial-gradient(120% 90% at 50% 0%,rgba(245,158,11,.28),rgba(2,6,23,0) 70%);text-align:center}
+.hbadge{display:inline-flex;align-items:center;justify-content:center;width:78px;height:78px;border-radius:22px;background:var(--accent);color:#0b1220;font-weight:900;font-size:26px;box-shadow:0 10px 30px rgba(245,158,11,.35)}
+.hhero h1{font-size:23px;font-weight:900;margin-top:14px}
+.hcontent{padding:0 16px;display:grid;gap:12px;max-width:560px;width:100%;margin:0 auto}
+.run{border:1px solid rgba(16,185,129,.55);background:linear-gradient(135deg,rgba(6,78,59,.75),rgba(15,23,42,.9));border-radius:18px;padding:14px}
+.run .k{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#6ee7b7;display:flex;align-items:center;gap:8px}
+.run .k::before{content:'';width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 0 4px rgba(52,211,153,.2)}
+.run .t{font-size:18px;font-weight:800;margin:6px 0 2px}
+.run .m{font-size:12.5px;color:#a7f3d0}
+.run .st{display:flex;gap:8px;margin:10px 0 12px}
+.run .st div{flex:1;background:rgba(0,0,0,.25);border-radius:10px;padding:6px 4px;text-align:center;min-width:0}
+.run .st b{display:block;font-size:18px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.run .st span{font-size:10.5px;color:#a7f3d0;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.go{width:100%;border-radius:12px;background:#10b981;color:#022c22;font-weight:900;font-size:16px;padding:13px}
+.big{display:flex;align-items:center;gap:14px;border-radius:18px;padding:18px;background:var(--accent);color:#0b1220;text-align:left;width:100%}
+.big.sec{background:var(--panel);color:var(--text);border:1px solid var(--line)}
+.big .ic{width:50px;height:50px;border-radius:14px;background:rgba(11,18,32,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.big.sec .ic{background:var(--panel2);color:var(--accent)}
+.big .ic svg.i{width:28px;height:28px}
+.big b{font-size:18px;display:block}
+.big small{font-size:12.5px;opacity:.8}
+.big .arr{margin-left:auto;font-size:24px;opacity:.7}
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sq{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;min-height:104px}
+.sq:active,.big:active,.lastg:active{filter:brightness(1.2)}
+.sq svg.i{width:26px;height:26px;color:var(--accent)}
+.sq b{font-size:15px}
+.sq small{color:var(--muted);font-size:12px}
+.lastg{font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:11px 13px;text-align:left;width:100%}
+.lastg b{color:var(--text)}
+.lastg .p{color:var(--accent);font-weight:800;white-space:nowrap}
+.bkwarn{display:flex;gap:10px;align-items:center;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.45);border-radius:14px;padding:10px 12px;font-size:12.5px;color:#fde68a}
+.bkwarn b{color:#fff}
+.bkwarn .btn{margin-left:auto;white-space:nowrap}
+.hfoot{margin-top:auto;padding-top:20px;text-align:center;font-size:11px;color:var(--dim)}
 #storageWarn{background:#7f1d1d;color:#fecaca;font-size:12px;padding:6px 10px;text-align:center}
 
 main{max-width:1200px;margin:auto;padding:8px;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
@@ -177,7 +217,14 @@ hr{border:0;border-top:1px solid var(--line)}
 }
 </style>
 </head>
-<body>
+<body class="home">
+
+<!-- Hauptmenü -->
+<div id="home" class="no-print">
+  <div class="hhero"><div class="hbadge">ETB</div><h1>Defensive Point Club</h1></div>
+  <div class="hcontent" id="homeContent"></div>
+  <div class="hfoot">Daten nur auf diesem Gerät</div>
+</div>
 
 <header class="no-print">
   <div class="hwrap">
@@ -189,10 +236,10 @@ hr{border:0;border-top:1px solid var(--line)}
   </div>
 </header>
 <nav id="bottomNav" class="no-print">
+  <button data-click="goHome"><svg class="i"><use href="#i-home"/></svg>Menü</button>
   <button data-click="openSetup"><svg class="i"><use href="#i-users"/></svg>Kader</button>
   <button data-click="openConfig"><svg class="i"><use href="#i-list"/></svg>Ereignisse</button>
   <button data-click="openExportCurrent"><svg class="i"><use href="#i-download"/></svg>Export</button>
-  <button data-click="openArchive"><svg class="i"><use href="#i-archive"/></svg>Archiv</button>
   <button class="end" data-click="finishGame"><svg class="i"><use href="#i-whistle"/></svg>Spielende</button>
 </nav>
 <div id="storageWarn" class="hidden no-print">Achtung: Dieser Browser speichert keine Daten (z.&nbsp;B. privater Modus). Bitte nach dem Spiel sofort exportieren.</div>
@@ -249,9 +296,9 @@ hr{border:0;border-top:1px solid var(--line)}
 <!-- Spiel & Kader -->
 <div id="setupModal" class="modal hidden">
   <div class="dlg">
-    <div class="dhead"><h3><svg class="i"><use href="#i-users"/></svg>Spiel &amp; Kader</h3><button class="x" data-click="closeSetup"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="dhead"><h3><svg class="i"><use href="#i-users"/></svg><span id="setupTitle">Spiel &amp; Kader</span></h3><button class="x" data-click="closeSetup"><svg class="i"><use href="#i-x"/></svg></button></div>
     <div class="dbody">
-      <div class="row2">
+      <div class="row2" id="setupGameRow">
         <div><label for="setupOpponent">Gegner / Spiel</label><input id="setupOpponent" type="text" placeholder="z. B. Kinderhaus Münster" autocomplete="off"></div>
         <div><label for="setupDate">Datum</label><input id="setupDate" type="date"></div>
       </div>
@@ -271,7 +318,7 @@ hr{border:0;border-top:1px solid var(--line)}
         <div class="saverow"><input id="rosterTplName" type="text" placeholder="Name, z. B. U12 Heimspiel" autocomplete="off"><button class="btn sm" data-click="saveRosterTpl">Nummern speichern</button></div>
       </div>
     </div>
-    <div class="dfoot"><button class="btn" data-click="closeSetup">Abbrechen</button><button class="btn primary" data-click="saveSetup">Speichern</button></div>
+    <div class="dfoot"><button class="btn" data-click="closeSetup">Abbrechen</button><button class="btn primary" id="setupSaveBtn" data-click="saveSetup">Speichern</button></div>
   </div>
 </div>
 
@@ -318,10 +365,19 @@ hr{border:0;border-top:1px solid var(--line)}
 <!-- Archiv & Backup -->
 <div id="archiveModal" class="modal hidden" data-backdrop="closeArchive">
   <div class="dlg">
-    <div class="dhead"><h3><svg class="i"><use href="#i-archive"/></svg>Archiv &amp; Sicherung</h3><button class="x" data-click="closeArchive"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="dhead"><h3><svg class="i"><use href="#i-archive"/></svg>Archiv</h3><button class="x" data-click="closeArchive"><svg class="i"><use href="#i-x"/></svg></button></div>
     <div class="dbody">
       <div id="archiveList" style="display:grid;gap:8px"></div>
-      <hr>
+    </div>
+  </div>
+</div>
+
+<!-- Sicherung -->
+<div id="backupModal" class="modal hidden" data-backdrop="closeBackup">
+  <div class="dlg">
+    <div class="dhead"><h3><svg class="i"><use href="#i-download"/></svg>Sicherung</h3><button class="x" data-click="closeBackup"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="dbody">
+      <div class="hint" style="margin:0" id="backupInfo"></div>
       <div>
         <label>Komplette Sicherung</label>
         <div class="hint" style="margin:0 0 8px">Alle Spiele, Archiv und Einstellungen in einer Datei, z. B. zum Gerätewechsel.</div>
@@ -379,6 +435,7 @@ hr{border:0;border-top:1px solid var(--line)}
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
   <symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
   <symbol id="i-list" viewBox="0 0 24 24"><path d="M10 6h11M10 12h11M10 18h11M3 6l1.5 1.5L7 5M3 12l1.5 1.5L7 11M3 18l1.5 1.5L7 17"/></symbol>
   <symbol id="i-whistle" viewBox="0 0 24 24"><circle cx="8.5" cy="14.5" r="5.5"/><path d="M13 11.5L22 9v-3H9.5M8.5 14.5h.01M15 3l-1 2M19 3.5l-1.5 2"/></symbol>
   <symbol id="i-up" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></symbol>
@@ -411,7 +468,7 @@ const DEFAULT_ROSTER_TPLS = [
 ];
 const GROUP_COLORS = ['#f59e0b', '#38bdf8', '#34d399', '#a78bfa', '#2dd4bf', '#f472b6', '#facc15'];
 const K = { cats: 'etb_categories_config', game: 'etb_game_v2', archive: 'etb_archive_v2', roster: 'etb_last_roster',
-            evTpl: 'etb_event_templates', rosterTpl: 'etb_roster_templates', names: 'etb_player_names',
+            lastBackup: 'etb_last_backup', evTpl: 'etb_event_templates', rosterTpl: 'etb_roster_templates', names: 'etb_player_names',
             oldGame: 'etb_basketball_def_app', oldArchive: 'etb_archived_games' };
 
 let categories, game, archive, lastRoster, eventTemplates, rosterTemplates, playerNames;
@@ -499,7 +556,45 @@ function migrateCategories(cats) {
 
 /* ===================== Start & Migration ===================== */
 function newGame(players) {
-  return { id: uid(), opponent: '', date: todayISO(), players: [...players], history: [] };
+  const names = {}; players.forEach(p => { if (playerNames && playerNames[p]) names[p] = playerNames[p]; });
+  return { id: uid(), opponent: '', date: todayISO(), players: [...players], names, history: [], active: false };
+}
+let setupMode = 'edit'; // 'new' | 'edit' | 'team'
+function showHome() { document.body.classList.add('home'); hideBanner(); renderHome(); window.scrollTo(0, 0); }
+function showGame() { document.body.classList.remove('home'); render(); window.scrollTo(0, 0); }
+function unsavedGames() { const t = load(K.lastBackup, 0) || 0; return archive.filter(a => (a.finishedAt || 0) > t).length; }
+function daysAgo(ts) { const d = Math.floor((Date.now() - ts) / 864e5); return d <= 0 ? 'heute' : d === 1 ? 'gestern' : `vor ${d} Tagen`; }
+function renderHome() {
+  const team = g => pointsOfTeam(g, categories);
+  let h = '';
+  if (game.active) {
+    const counts = tally(game); let top = null, topPts = -Infinity;
+    allPlayers(game).forEach(p => { const v = pointsOf(counts[p] || {}, categories); if (game.history.length && v > topPts) { topPts = v; top = p; } });
+    const since = game.startedAt ? new Date(game.startedAt).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) + ' Uhr' : (game.history[0] ? game.history[0].time.slice(0, 5) + ' Uhr' : '');
+    h += `<div class="run"><div class="k">Spiel läuft</div><div class="t">${game.opponent ? 'gegen ' + esc(game.opponent) : 'Spiel ohne Gegner'}</div>
+      <div class="m">${esc(fmtDate(game.date))}${since ? ' · seit ' + esc(since) : ''}</div>
+      <div class="st"><div><b>${game.history.length}</b><span>Aktionen</span></div><div><b>${team(game)}</b><span>Teampunkte</span></div>
+      <div><b>${top ? '#' + esc(top) : '–'}</b><span>${top ? 'Top' + (nameOf(game, top) ? ': ' + esc(nameOf(game, top)) : '') : 'Top-Spieler'}</span></div></div>
+      <button class="go" data-click="continueGame">Weiter erfassen ›</button></div>`;
+  }
+  h += `<button class="big ${game.active ? 'sec' : ''}" data-click="newGameFlow"><span class="ic"><svg class="i"><use href="#i-whistle"/></svg></span>
+    <span><b>Neues Spiel</b><small>${game.active ? 'beendet das laufende Spiel vorher' : 'Gegner &amp; Kader wählen, dann los'}</small></span><span class="arr">›</span></button>`;
+  h += `<div class="hgrid">
+    <button class="sq" data-click="openArchive"><svg class="i"><use href="#i-archive"/></svg><b>Archiv</b><small>${archive.length} Spiel${archive.length === 1 ? '' : 'e'}</small></button>
+    <button class="sq" data-click="openTeam"><svg class="i"><use href="#i-users"/></svg><b>Mannschaft</b><small>Nummern, Namen, Vorlagen</small></button>
+    <button class="sq" data-click="openConfig"><svg class="i"><use href="#i-list"/></svg><b>Ereignisse</b><small>Aktionen &amp; Punkte</small></button>
+    <button class="sq" data-click="openBackup"><svg class="i"><use href="#i-download"/></svg><b>Sicherung</b><small>Backup &amp; Einstellungen</small></button></div>`;
+  const last = archive[archive.length - 1];
+  if (last) h += `<button class="lastg" data-click="openArchive"><span>Letztes Spiel: <b>${esc(last.opponent || 'ohne Gegner')}</b> · ${esc(fmtDate(last.date))}</span><span class="p">${pointsOfTeam(last, last.categories)} P</span></button>`;
+  const n = unsavedGames();
+  if (n) { const t = load(K.lastBackup, 0);
+    h += `<div class="bkwarn"><span><b>${n} Spiel${n === 1 ? '' : 'e'}</b> noch nicht gesichert${t ? ' · letzte Sicherung ' + daysAgo(t) : ''}</span><button class="btn sm primary" data-click="openBackup">Jetzt sichern</button></div>`; }
+  $('homeContent').innerHTML = h;
+}
+function pointsOfTeam(g, cats) { const c = tally(g); return allPlayers(g).reduce((s, p) => s + pointsOf(c[p] || {}, cats), 0); }
+async function archiveCurrent() {
+  if (game.history.length) { archive.push({ ...clone(game), categories: clone(categories), finishedAt: Date.now() }); store(K.archive, archive); }
+  game = newGame(lastRoster); saveGame();
 }
 
 function init() {
@@ -533,8 +628,8 @@ function init() {
     });
     store(K.archive, archive);
   }
-  const firstStart = !game;
   if (!game) { game = newGame(lastRoster); saveGame(); }
+  if (game.active === undefined) { game.active = game.history.length > 0; saveGame(); } // ältere Versionen
 
   document.addEventListener('click', onClick);
   document.querySelectorAll('.modal[data-backdrop]').forEach(m => m.addEventListener('click', e => { if (e.target === m) actions[m.dataset.backdrop](); }));
@@ -546,7 +641,7 @@ function init() {
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});
 
   render();
-  if (firstStart) actions.openSetup();
+  showHome();
 }
 
 /* ===================== Darstellung ===================== */
@@ -847,13 +942,14 @@ function downloadFile(blob, name) {
     a.href = url; a.download = name; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 60000); // nicht sofort freigeben, sonst bricht der Download auf manchen Geräten ab
     toast('Datei wird gespeichert: ' + name);
-  } catch (e) { toast('Speichern nicht möglich – bitte „Teilen“ verwenden.', 4000); }
+    return true;
+  } catch (e) { toast('Speichern nicht möglich – bitte „Teilen“ verwenden.', 4000); return false; }
 }
 async function shareFile(blob, name) {
   const file = new File([blob], name, { type: blob.type });
   if (!(navigator.canShare && navigator.canShare({ files: [file] }))) { toast('Teilen für diesen Dateityp nicht möglich – Datei wird gespeichert.'); return downloadFile(blob, name); }
-  try { await navigator.share({ files: [file], title: name }); }
-  catch (e) { if (e.name !== 'AbortError') downloadFile(blob, name); }
+  try { await navigator.share({ files: [file], title: name }); return true; }
+  catch (e) { if (e.name !== 'AbortError') { downloadFile(blob, name); return true; } return false; }
 }
 function exportName(ext) { const g = exportTarget.g; return `ETB_DPC_${g.date || todayISO()}_${safeName(g.opponent)}.${ext}`; }
 
@@ -913,7 +1009,8 @@ async function onBackupFile(e) {
     if (d.playerNames && typeof d.playerNames === 'object') { playerNames = d.playerNames; store(K.names, playerNames); }
     store(K.cats, categories); saveGame(); store(K.archive, archive); store(K.roster, lastRoster);
     store(K.evTpl, eventTemplates); store(K.rosterTpl, rosterTemplates);
-    render(); renderArchive(); toast('Backup geladen');
+    if (game.active === undefined) game.active = game.history.length > 0;
+    render(); renderArchive(); renderHome(); toast('Backup geladen');
   } catch (err) { toast('Diese Datei ist kein gültiges Backup.', 4000); }
 }
 
@@ -943,6 +1040,18 @@ function readNameInputs() { document.querySelectorAll('#nameList input').forEach
 function renderNameInputs() {
   const players = parseRoster($('setupRoster').value);
   $('nameList').innerHTML = players.map(p => `<div class="namerow"><b>#${esc(p)}</b><input type="text" data-p="${esc(p)}" value="${esc(setupNames[p] || '')}" placeholder="Name" autocomplete="off" autocapitalize="words"></div>`).join('') || '<span class="hint" style="margin:0">Erst Nummern eintragen.</span>';
+}
+function fillSetup(g) {
+  $('setupTitle').textContent = setupMode === 'new' ? 'Neues Spiel' : setupMode === 'team' ? 'Mannschaft' : 'Spiel & Kader';
+  $('setupSaveBtn').textContent = setupMode === 'new' ? 'Spiel starten' : 'Speichern';
+  $('setupGameRow').classList.toggle('hidden', setupMode === 'team');
+  $('setupOpponent').value = g.opponent || '';
+  $('setupDate').value = g.date || todayISO();
+  $('setupRoster').value = g.players.join(', ');
+  $('rosterTplName').value = '';
+  setupNames = { ...playerNames, ...(g.names || {}) };
+  renderNameInputs(); renderRosterTpls();
+  showM('setupModal');
 }
 function renderRosterTpls() {
   $('presetChips').innerHTML = rosterTemplates.length ? rosterTemplates.map((t, i) => `<span class="tplchip"><button data-click="applyPreset" data-i="${i}">${esc(t.name)}</button><button class="del" data-click="delRosterTpl" data-i="${i}" title="Vorlage löschen"><svg class="i"><use href="#i-x"/></svg></button></span>`).join('')
@@ -990,27 +1099,31 @@ const actions = {
   },
   async finishGame() {
     if (!game.history.length) {
-      if (!await ask('Neues Spiel starten?', 'Im aktuellen Spiel wurde noch nichts erfasst. Es wird nicht archiviert.', 'Neues Spiel', false)) return;
-    } else {
-      if (!await ask('Spiel beenden?', 'Das Spiel wird im Archiv gespeichert (dort jederzeit exportierbar) und ein neues Spiel beginnt.', 'Beenden', false)) return;
-      archive.push({ ...clone(game), categories: clone(categories), finishedAt: Date.now() });
-      store(K.archive, archive);
+      if (!await ask('Spiel verwerfen?', 'In diesem Spiel wurde noch nichts erfasst. Es wird nicht archiviert.', 'Verwerfen', false)) return;
+    } else if (!await ask('Spiel beenden?', 'Das Spiel wird im Archiv gespeichert und kann dort jederzeit exportiert werden.', 'Beenden', false)) return;
+    const had = game.history.length;
+    await archiveCurrent(); showHome();
+    if (had) toast('Spiel im Archiv gespeichert');
+  },
+  goHome() { showHome(); },
+  continueGame() { showGame(); keepAwake(); },
+  async newGameFlow() {
+    if (game.active) {
+      const msg = game.history.length ? `Das laufende Spiel${game.opponent ? ' gegen ' + game.opponent : ''} (${game.history.length} Aktion${game.history.length === 1 ? '' : 'en'}) wird ins Archiv verschoben.` : 'Das laufende Spiel ohne Aktionen wird verworfen.';
+      if (!await ask('Laufendes Spiel beenden?', msg, 'Beenden & neu', false)) return;
+      await archiveCurrent(); renderHome();
     }
-    const keepNames = game.names || {};
-    game = newGame(game.players); game.names = { ...keepNames }; saveGame(); hideBanner(); render();
-    actions.openSetup();
+    setupMode = 'new'; fillSetup(newGame(lastRoster));
   },
+  openTeam() { setupMode = 'team'; fillSetup(game.active ? { ...newGame(lastRoster) } : game); },
+  openBackup() {
+    const t = load(K.lastBackup, 0), n = unsavedGames();
+    $('backupInfo').textContent = (t ? 'Letzte komplette Sicherung: ' + daysAgo(t) + '.' : 'Noch keine komplette Sicherung erstellt.') + (n ? ` ${n} beendete${n === 1 ? 's Spiel ist' : ' Spiele sind'} noch nicht gesichert.` : '');
+    showM('backupModal');
+  },
+  closeBackup() { hideM('backupModal'); renderHome(); },
 
-  openSetup() {
-    $('setupOpponent').value = game.opponent || '';
-    $('setupDate').value = game.date || todayISO();
-    $('setupRoster').value = game.players.join(', ');
-    $('rosterTplName').value = '';
-    setupNames = { ...playerNames, ...(game.names || {}) };
-    renderNameInputs();
-    renderRosterTpls();
-    showM('setupModal');
-  },
+  openSetup() { setupMode = 'edit'; fillSetup(game); },
   closeSetup() { hideM('setupModal'); },
   applyPreset(el) {
     const t = rosterTemplates[+el.dataset.i]; if (!t) return;
@@ -1037,6 +1150,15 @@ const actions = {
   saveSetup() {
     const players = parseRoster($('setupRoster').value);
     if (!players.length) { toast('Bitte mindestens eine Trikotnummer eintragen.'); return; }
+    readNameInputs();
+    players.forEach(p => { if (setupNames[p]) playerNames[p] = setupNames[p]; else delete playerNames[p]; });
+    store(K.names, playerNames);
+    lastRoster = players; store(K.roster, lastRoster);
+    if (setupMode === 'team') {
+      if (!game.active) { game = newGame(players); saveGame(); }
+      hideM('setupModal'); renderHome(); toast('Mannschaft gespeichert'); return;
+    }
+    if (setupMode === 'new') { game = newGame(players); game.active = true; game.startedAt = Date.now(); }
     game.opponent = $('setupOpponent').value.trim();
     game.date = $('setupDate').value || todayISO();
     game.players = players;
@@ -1046,7 +1168,9 @@ const actions = {
     players.forEach(p => { if (setupNames[p]) playerNames[p] = setupNames[p]; else delete playerNames[p]; });
     store(K.names, playerNames);
     lastRoster = players; store(K.roster, lastRoster);
-    saveGame(); render(); hideM('setupModal');
+    game.active = true;
+    saveGame(); hideM('setupModal');
+    if (setupMode === 'new') showGame(); else render();
   },
 
   openConfig() { configDraft = clone(categories); $('evTplName').value = ''; renderConfig(); showM('configModal'); },
@@ -1098,7 +1222,7 @@ const actions = {
   exportPrint() { renderPrint(exportTarget.g, exportTarget.cats); hideM('exportModal'); setTimeout(() => window.print(), 50); },
 
   openArchive() { renderArchive(); showM('archiveModal'); },
-  closeArchive() { hideM('archiveModal'); },
+  closeArchive() { hideM('archiveModal'); if (document.body.classList.contains('home')) renderHome(); },
   archiveExport(el) {
     const a = archive.find(x => x.id === el.dataset.id); if (!a) return;
     exportTarget = { g: a, cats: a.categories };
@@ -1111,8 +1235,8 @@ const actions = {
       archive = archive.filter(x => x.id !== a.id); store(K.archive, archive); renderArchive();
     }
   },
-  backupSave() { downloadFile(backupBlob(), `ETB_DPC_Backup_${todayISO()}.json`); },
-  backupShare() { shareFile(backupBlob(), `ETB_DPC_Backup_${todayISO()}.json`); },
+  backupSave() { if (downloadFile(backupBlob(), `ETB_DPC_Backup_${todayISO()}.json`)) { store(K.lastBackup, Date.now()); actions.openBackup(); } },
+  async backupShare() { if (await shareFile(backupBlob(), `ETB_DPC_Backup_${todayISO()}.json`)) { store(K.lastBackup, Date.now()); actions.openBackup(); } },
   backupLoad() { $('backupFile').click(); },
   settingsSave() { downloadFile(settingsBlob(), `ETB_DPC_Einstellungen_${todayISO()}.json`); },
   settingsShare() { shareFile(settingsBlob(), `ETB_DPC_Einstellungen_${todayISO()}.json`); },
